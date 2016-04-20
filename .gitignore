@@ -39,4 +39,5 @@ Thumbs.db
 #project #
 ##########
 .idea
-SMServer.iml
+MuShare.iml
+!vendor
