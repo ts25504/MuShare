@@ -1,0 +1,63 @@
+{
+	"ImportPath": "MuShare",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v62",
+	"Deps": [
+		{
+			"ImportPath": "github.com/boj/redistore",
+			"Comment": "v1.2",
+			"Rev": "fc113767cd6b051980f260d6dbe84b2740c46ab0"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/inject",
+			"Comment": "v1.0-rc1-10-g33e0aa1",
+			"Rev": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504"
+		},
+		{
+			"ImportPath": "github.com/garyburd/redigo/internal",
+			"Rev": "8873b2f1995f59d4bcdd2b0dc9858e2cb9bf0c13"
+		},
+		{
+			"ImportPath": "github.com/garyburd/redigo/redis",
+			"Rev": "8873b2f1995f59d4bcdd2b0dc9858e2cb9bf0c13"
+		},
+		{
+			"ImportPath": "github.com/go-martini/martini",
+			"Comment": "v1.0-183-gb174c4f",
+			"Rev": "b174c4f35f9f3805e960be6286d888bc79534755"
+		},
+		{
+			"ImportPath": "github.com/go-sql-driver/mysql",
+			"Comment": "v1.2-194-g7ebe0a5",
+			"Rev": "7ebe0a500653eeb1859664bed5e48dec1e164e73"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
+		},
+		{
+			"ImportPath": "github.com/gorilla/securecookie",
+			"Rev": "8dacca26977607e637262eb66b15b7d39f2d3009"
+		},
+		{
+			"ImportPath": "github.com/gorilla/sessions",
+			"Rev": "a1216e0aed834aa9074063dd4085f5c3df8d1fab"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/gorm",
+			"Rev": "5174cc5c242a728b435ea2be8a2f7f998e15429b"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/gorm/dialects/mysql",
+			"Rev": "5174cc5c242a728b435ea2be8a2f7f998e15429b"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/inflection",
+			"Rev": "3272df6c21d04180007eb3349844c89a3856bc25"
+		},
+		{
+			"ImportPath": "github.com/martini-contrib/sessions",
+			"Rev": "fa13114fbcf036dff8185d728651d85fcef772db"
+		}
+	]
+}

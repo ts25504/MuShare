@@ -1,0 +1,19 @@
+{
+  "Mysql": {
+    "User": "root",
+    "Password": "w19920610",
+    "Database": "gctw"
+  },
+  "Redis": {
+    "User": "asd",
+    "Password": "asd"
+  },
+  "Prod": {
+    "Host": "findlee.space",
+    "Port": "6666"
+  },
+  "Dev": {
+    "Host": "localhost",
+    "Port": "8080"
+  }
+}
