@@ -15,6 +15,7 @@ func Include(m *martini.ClassicMartini) {
 
 func includePages(m *martini.ClassicMartini) {
   m.Get("/", pages.Index)
+  m.Get("/test",pages.TestPage)
 }
 
 func includeApi(m *martini.ClassicMartini) {
@@ -23,7 +24,7 @@ func includeApi(m *martini.ClassicMartini) {
     api.Login, api.LoginSetToken)
 
   m.Post("/user/register",
-    RetrieveBody(datatype.RegisterBody{}),
+    RetrieveBody(&datatype.RegisterBody{}),
     api.Register)
 }
 

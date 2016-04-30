@@ -1,5 +1,6 @@
 package datatype
 
+
 type LoginBody struct {
   Mail string
   Phone string
@@ -8,5 +9,8 @@ type LoginBody struct {
 }
 
 type RegisterBody struct {
-
+  Mail string
+  Phone string
+  Name string
+  Password string
 }

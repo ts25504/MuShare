@@ -20,7 +20,7 @@ func TestUserInsert(t *testing.T) {
 }
 
 func TestUserQuery(t *testing.T) {
-  user := models.User{Name:"liyifan"}
+  user := models.User{Name:"shuaihua"}
   DB.First(&user)
   DB.Model(&user).Related(&user.Friends, "Friends")
   for i, _ := range user.Friends{

@@ -32,7 +32,7 @@
   "Production": {
     "Mysql": {
       "User": "root",
-      "Password": "w19920610",
+      "Password": "",
       "Database": "mushare"
     },
     "Redis": {

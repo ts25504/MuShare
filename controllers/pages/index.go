@@ -12,3 +12,9 @@ func Index(rw http.ResponseWriter) {
   t := template.Must(template.ParseFiles(path.Join(dir, "views", "index.html")))
   t.Execute(rw, nil)
 }
+
+func TestPage(rw http.ResponseWriter) {
+  dir, _ := os.Getwd()
+  t := template.Must(template.ParseFiles(path.Join(dir, "views", "test.html")))
+  t.Execute(rw, nil)
+}
