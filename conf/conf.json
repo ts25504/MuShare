@@ -1,19 +1,47 @@
 {
-  "Mysql": {
-    "User": "root",
-    "Password": "w19920610",
-    "Database": "gctw"
+  "Development": {
+    "Mysql": {
+      "User": "root",
+      "Password": "w19920610",
+      "Database": "mushare_dev"
+    },
+    "Redis": {
+      "Addr": "127.0.0.1:6379",
+      "Password": "w19920610"
+    },
+    "App": {
+      "Port": "8080",
+      "Host": "localhost"
+    }
   },
-  "Redis": {
-    "User": "asd",
-    "Password": "asd"
+  "Test": {
+    "Mysql": {
+      "User": "root",
+      "Password": "w19920610",
+      "Database": "mushare_test"
+    },
+    "Redis": {
+      "Addr": "127.0.0.1:6379",
+      "Password": "w19920610"
+    },
+    "App": {
+      "Port": "8080",
+      "Host": "localhost"
+    }
   },
-  "Prod": {
-    "Host": "findlee.space",
-    "Port": "6666"
-  },
-  "Dev": {
-    "Host": "localhost",
-    "Port": "8080"
+  "Production": {
+    "Mysql": {
+      "User": "root",
+      "Password": "w19920610",
+      "Database": "mushare"
+    },
+    "Redis": {
+      "Addr": "",
+      "Password": ""
+    },
+    "App": {
+      "Port": "8080",
+      "Host": "mushare.cn"
+    }
   }
 }

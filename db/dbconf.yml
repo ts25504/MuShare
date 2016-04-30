@@ -1,0 +1,14 @@
+development:
+    driver: mysql
+    open: root:w19920610@tcp(127.0.0.1:3306)/mushare_dev
+    dialect: mysql
+
+production:
+    driver: mysql
+    dialect: mysql
+    open: root@tcp(127.0.0.1:3306)/mushare
+
+test:
+    driver: mysql
+    dialect: mysql
+    open: root:w19920610@tcp(127.0.0.1:3306)/mushare_test

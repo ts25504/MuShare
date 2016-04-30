@@ -58,6 +58,30 @@
 		{
 			"ImportPath": "github.com/martini-contrib/sessions",
 			"Rev": "fa13114fbcf036dff8185d728651d85fcef772db"
+		},
+		{
+			"ImportPath": "gopkg.in/bsm/ratelimit.v1",
+			"Rev": "db14e161995a5177acef654cb0dd785e8ee8bc22"
+		},
+		{
+			"ImportPath": "gopkg.in/redis.v3",
+			"Comment": "v3.6.1",
+			"Rev": "b3514029955f38f2a1120b5c3ad59f241d9eecca"
+		},
+		{
+			"ImportPath": "gopkg.in/redis.v3/internal/consistenthash",
+			"Comment": "v3.6.1",
+			"Rev": "b3514029955f38f2a1120b5c3ad59f241d9eecca"
+		},
+		{
+			"ImportPath": "gopkg.in/redis.v3/internal/hashtag",
+			"Comment": "v3.6.1",
+			"Rev": "b3514029955f38f2a1120b5c3ad59f241d9eecca"
+		},
+		{
+			"ImportPath": "gopkg.in/redis.v3/internal/pool",
+			"Comment": "v3.6.1",
+			"Rev": "b3514029955f38f2a1120b5c3ad59f241d9eecca"
 		}
 	]
 }

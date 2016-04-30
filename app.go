@@ -1,45 +1,37 @@
 package main
 
 import (
-	"github.com/go-martini/martini"
-	"github.com/martini-contrib/sessions"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "MuShare/models/migration"
-	config "MuShare/conf"
-	"MuShare/router"
-	"MuShare/middlewares"
+  _ "github.com/jinzhu/gorm/dialects/mysql"
+  "github.com/go-martini/martini"
+  "github.com/martini-contrib/sessions"
+  config "MuShare/conf"
+  "MuShare/router"
+  "MuShare/middlewares"
 )
 
 func main() {
-	conf := config.LoadConf()
-	m := martini.Classic()
-	var host string
-	var port string
-	if martini.Env == "Prod" {
-		host = conf.Prod.Host
-		port = conf.Prod.Port
-	}else {
-		host = conf.Dev.Host
-		port = conf.Dev.Port
-	}
+  conf := config.LoadConf(martini.Env)
+  m := martini.Classic()
+  //create new session middleware
+  store := sessions.NewCookieStore([]byte("MushareSecret"))
+  store.Options(sessions.Options{
+    Path: "/",
+    Domain: conf.App.Host,
+    MaxAge: 60 * 60 * 60 * 24,
+    HttpOnly: true,
+  })
+  //middleware
+  m.Handlers(
+    martini.Recovery(),
+    martini.Logger(),
+    sessions.Sessions("_session", store),
+    martini.Static("static", martini.StaticOptions{}),
+    middlewares.InjectRedis(conf.Redis),
+    middlewares.InjectDB(conf.Mysql),
+  )
 
-	//create new session middleware
-	store := sessions.NewCookieStore([]byte("secret123"))
-	store.Options(sessions.Options{
-		Path: "/",
-		Domain: host,
-		MaxAge: 60 * 60 * 60 * 24,
-		HttpOnly: true,
-	})
-	//middleware
-	m.Handlers(
-		sessions.Sessions("_session", store),
-		martini.Static("static", martini.StaticOptions{}),
-		middlewares.InjectDB(conf),
-	)
-
-	//routers
-	router.Include(m)
-	//start server
-	m.RunOnAddr(host + ":" + port)
+  //routers
+  router.Include(m)
+  //start server
+  m.RunOnAddr(conf.App.Host + ":" + conf.App.Port)
 }

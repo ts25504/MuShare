@@ -1,45 +1,54 @@
 package conf
 
 import (
-	"os"
-	"encoding/json"
+  "os"
+  "encoding/json"
 )
 
-type mysql struct {
-	User     string
-	Password string
-	Database string
+type Mysql struct {
+  User     string
+  Password string
+  Database string
 }
 
-type redis struct {
-	User     string
-	Password string
+type Redis struct {
+  Addr     string
+  Password string
 }
 
-type prod struct {
-	Host string
-	Port string
-}
-
-type dev struct {
-	Host string
-	Port string
+type App  struct {
+  Port string
+  Host string
 }
 
 type Conf struct {
-	Mysql mysql
-	Redis redis
-	Prod  prod
-	Dev   dev
+  Mysql Mysql
+  Redis Redis
+  App   App
 }
 
-func LoadConf() *Conf {
-	file, _ := os.Open("conf/conf.json")
-	decoder := json.NewDecoder(file)
-	conf := Conf{}
-	err := decoder.Decode(&conf)
-	if err != nil {
-		panic("Load Config File Failed")
-	}
-	return &conf
+type All  struct {
+  Development Conf
+  Test        Conf
+  Production  Conf
+}
+
+func LoadConf(env string) *Conf {
+  file, err := os.Open("conf/conf.json")
+  if err != nil {
+    panic("Can't Open Config File")
+  }
+  decoder := json.NewDecoder(file)
+  all := All{}
+  err = decoder.Decode(&all)
+  if err != nil {
+    panic("Load Config File Failed")
+  }
+  if (env == "production") {
+    return &all.Production;
+  }else if (env == "development") {
+    return &all.Development;
+  }else {
+    return &all.Test;
+  }
 }
