@@ -12,7 +12,7 @@ func Up_20160429131456(txn *sql.Tx) {
 	  "created_at int(13) unsigned not null, " +
 	  "from_id int(13) unsigned not null, " +
 	  "to_id int(10) unsigned not null, " +
-	  "privilege varchar(100), " +
+	  "state varchar(100), " +
 	  "PRIMARY KEY(id) " + ")"
 	stmt, err := txn.Prepare(sql)
 	if err != nil {

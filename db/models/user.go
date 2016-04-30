@@ -6,6 +6,7 @@ type User struct {
   Mail        string      `gorm:"" json:"mail"`
   Phone       string      `gorm:"" json:"phone"`
   Avatar      string      `gorm:"" json:"avatar"`
+  ScreenName  string      `gorm:"" json:"screenName"`
   Gender      int         `gorm:"" json:"gender"`
   Birth       uint        `gorm:"" json:"birth"`
   Description string      `gorm:"" json:"description"`
@@ -15,7 +16,7 @@ type User struct {
   Albums      []Album     `gorm:"ForeignKey:UserID" json:"albums,omitempty"`
   Sheets      []Sheet     `gorm:"ForeignKey:UserID" json:"sheets,omitempty"`
   Subscribe   []Subscribe `gorm:"ForeignKey:UserID" json:"token,omitempty"`
-  Token       string      `gorm:"-"`
+  Token       string      `sql:"-"`
 }
 
 func (User) TableName() string {
