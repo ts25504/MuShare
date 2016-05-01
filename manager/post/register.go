@@ -6,15 +6,19 @@ import (
 	"net/http"
 	"time"
 	"regexp"
+  "fmt"
 )
 
 func (this *Post) Register(body *datatype.RegisterBody)  datatype.Response{
 	var res datatype.Response
 	reg := regexp.MustCompile(`^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$`)
-	sel := make([]bool, 3)
+	sel := [...]bool{true, true, true}
+  fmt.Println(sel)
 	u := models.User{}
 	flag := 0
-	if (body.Password == "") {
+  // begin transaction
+  tx := this.DB.Begin()
+  if (body.Password == "") {
     goto BadRequest
   }
 
@@ -22,21 +26,20 @@ func (this *Post) Register(body *datatype.RegisterBody)  datatype.Response{
     goto BadRequest
   }
 
-	if reg.FindAllString(body.Mail, -1) == nil {
-		goto BadRequest
-	}
-
-	if body.Name != "" {
-    this.DB.Where("name=?", body.Name).First(&u)
-		sel[2] = checkUser(u)
+  if reg.FindAllString(body.Mail, -1) == nil {
+    goto BadRequest
   }
-	if body.Mail != "" {
-    this.DB.Where("mail=?", body.Mail).First(&u)
+	if body.Name != "" {
+    tx.Where("name=?", body.Name).First(&u)
 		sel[0] = checkUser(u)
   }
-	if body.Phone != "" {
-    this.DB.Where("phone=?", body.Phone).First(&u)
+	if body.Mail != "" {
+    tx.Where("mail=?", body.Mail).First(&u)
 		sel[1] = checkUser(u)
+  }
+	if body.Phone != "" {
+    tx.Where("phone=?", body.Phone).First(&u)
+		sel[2] = checkUser(u)
   }
 
 	for i, v := range sel{
@@ -47,7 +50,9 @@ func (this *Post) Register(body *datatype.RegisterBody)  datatype.Response{
 	}
 
 	CreateUser(&u, body)
-	this.DB.Create(&u)
+	tx.Create(&u)
+  // transaction commit
+  tx.Commit()
 
 	res = datatype.Response{
 		Status: http.StatusOK,
@@ -65,11 +70,11 @@ func (this *Post) Register(body *datatype.RegisterBody)  datatype.Response{
 	var resText string
 	switch flag {
 	case 0:
-		resText = "Mail existed"
-	case 1:
-		resText = "Phone existed"
-	case 2:
 		resText = "Name existed"
+	case 1:
+		resText = "Mail existed"
+	case 2:
+		resText = "Phone existed"
 	}
 	res = datatype.Response{
 		Status:http.StatusForbidden,
