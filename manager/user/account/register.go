@@ -1,4 +1,4 @@
-package post
+package account
 
 import (
 	"MuShare/datatype"
@@ -7,10 +7,12 @@ import (
 	"time"
 	"regexp"
   "fmt"
+  "MuShare/datatype/request/user"
 )
 
-func (this *Post) Register(body *datatype.RegisterBody)  datatype.Response{
+func (this *Account) Register(body *user.Account)  datatype.Response{
 	var res datatype.Response
+	//check mail
 	reg := regexp.MustCompile(`^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$`)
 	sel := [...]bool{true, true, true}
   fmt.Println(sel)
@@ -93,7 +95,7 @@ func checkUser(user models.User) bool{
 
 }
 
-func CreateUser(u *models.User,body *datatype.RegisterBody){
+func CreateUser(u *models.User,body *user.Account){
 	u.Mail = body.Mail
 	u.Name = body.Name
 	u.Phone = body.Phone

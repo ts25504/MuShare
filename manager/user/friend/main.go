@@ -1,7 +1,7 @@
-package post
+package friend
 
 import "github.com/jinzhu/gorm"
 
-type Post struct {
+type Friend struct {
   DB *gorm.DB
 }

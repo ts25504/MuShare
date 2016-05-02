@@ -1,31 +1,33 @@
-package api
+package account
 
 import (
   "net/http"
   "github.com/jinzhu/gorm"
-  . "MuShare/manager/post"
   "encoding/json"
   "github.com/go-martini/martini"
   "gopkg.in/redis.v3"
   "MuShare/db/models"
   "strconv"
-  "MuShare/datatype"
+  . "MuShare/manager/user/account"
+  "MuShare/datatype/request/user"
 )
 
-func Login(db *gorm.DB, c martini.Context, body *datatype.LoginBody, rw http.ResponseWriter) {
+func Login(db *gorm.DB, c martini.Context, body *user.Account, rw http.ResponseWriter) {
   if (db == nil) {
     panic("db is not exist")
   }
-  post := Post{DB:db}
-  res := post.Login(body)
-  resJson, err := json.Marshal(res)
-  if err != nil {
-    panic(err.Error())
-  }
+
+  account := Account{DB:db}
+  res := account.Login(body)
 
   if res.Status == http.StatusOK {
     c.Map(res.Body)
     c.Next()
+  }
+
+  resJson, err := json.Marshal(res)
+  if err != nil {
+    panic(err.Error())
   }
   //send json response
   rw.Header().Set("content-Type", "application/json; charset=utf-8")

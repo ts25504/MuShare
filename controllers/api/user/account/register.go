@@ -1,20 +1,20 @@
-package api
+package account
 
 import (
   "net/http"
   "github.com/jinzhu/gorm"
-  . "MuShare/manager/post"
+  . "MuShare/manager/user/account"
   "encoding/json"
   "github.com/go-martini/martini"
-	"MuShare/datatype"
+  "MuShare/datatype/request/user"
 )
 
-func Register(db *gorm.DB, c martini.Context, body *datatype.RegisterBody, rw http.ResponseWriter) {
+func Register(db *gorm.DB, c martini.Context, body *user.Account, rw http.ResponseWriter) {
 	if (db == nil) {
     panic("db is not exist")
   }
-  post := Post{DB:db}
-  res := post.Register(body)
+  account := Account{DB:db}
+  res := account.Register(body)
   resJson, err := json.Marshal(res)
   if err != nil {
     panic(err.Error())

@@ -1,13 +1,14 @@
-package post
+package account
 
 import (
   "MuShare/db/models"
   "MuShare/datatype"
   "MuShare/utils"
   "net/http"
+  "MuShare/datatype/request/user"
 )
 
-func (this *Post) Login(body *datatype.LoginBody) datatype.Response{
+func (this *Account) Login(body *user.Account) datatype.Response{
   var res datatype.Response
   u := models.User{}
   if (body.Password == "") {
