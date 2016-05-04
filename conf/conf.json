@@ -2,12 +2,12 @@
   "Development": {
     "Mysql": {
       "User": "root",
-      "Password": "",
+      "Password": "w19920610",
       "Database": "mushare_dev"
     },
     "Redis": {
       "Addr": "127.0.0.1:6379",
-      "Password": ""
+      "Password": "w19920610"
     },
     "App": {
       "Port": "8080",
