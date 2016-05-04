@@ -7,6 +7,7 @@ import (
   "MuShare/controllers/api/user/account"
   "MuShare/controllers/api/user/friend"
   "MuShare/datatype/request/user"
+  "reflect"
 )
 
 func Include(m *martini.ClassicMartini) {
@@ -23,7 +24,7 @@ func includeUserApi(m *martini.ClassicMartini) {
   m.Group("/user/account", func(r martini.Router) {
     r.Post("/login", account.Login, account.LoginSetToken)
     r.Post("/register", account.Register)
-  }, RetrieveBody(&user.Account{}))
+  }, RetrieveBody(reflect.TypeOf(user.Account{})))
 
   m.Group("/user/friend", func(r martini.Router) {
     r.Get("/list", friend.GetFriendsList)
@@ -31,7 +32,7 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Post("/request", friend.NewRequest)
     r.Put("/request", friend.AcceptRequest)
     r.Delete("/delete", friend.UnFollow)
-  }, RetrieveBody(&user.Friend{}))
+  }, RetrieveBody(reflect.TypeOf(user.Friend{})), friend.TokenAuth)
 
   m.Group("/user/profile", func(r martini.Router) {
     r.Get("/:id")

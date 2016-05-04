@@ -1,9 +1,9 @@
 package models
 
 type Friends struct {
-  ID     uint    `gorm:""`
-  FromID uint    `gorm:""`
-  ToID   uint    `gorm:""`
+  Model
+  FromID int    `gorm:""`
+  ToID   int    `gorm:""`
   State  string  `gorm:""`
   User   User    `gorm:"ForeignKey:ToID"`
 }

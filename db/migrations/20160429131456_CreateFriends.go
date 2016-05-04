@@ -10,6 +10,7 @@ func Up_20160429131456(txn *sql.Tx) {
 	var sql string = "create table if not exists friends ( " +
 	  "id int(10) unsigned not null auto_increment, " +
 	  "created_at int(13) unsigned not null, " +
+	  "updated_at int(13) unsigned not null, " +
 	  "from_id int(13) unsigned not null, " +
 	  "to_id int(10) unsigned not null, " +
 	  "state varchar(100), " +

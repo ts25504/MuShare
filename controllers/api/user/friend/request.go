@@ -2,23 +2,45 @@ package friend
 
 import (
   "net/http"
-  "github.com/go-martini/martini"
   "github.com/jinzhu/gorm"
   "MuShare/datatype/request/user"
+  "encoding/json"
+  . "MuShare/manager/user/friend"
+  "MuShare/datatype"
 )
 
-func GetRequests(db *gorm.DB, c martini.Context, body *user.Friend,
-  rw http.ResponseWriter) {
+func GetRequests(db *gorm.DB, body *user.Friend, rw http.ResponseWriter) {
+
+  friend := Friend{DB:db}
+  res := friend.Get(body)
+  response(res, rw)
 
 }
 
-func NewRequest(db *gorm.DB, c martini.Context, body *user.Friend,
-  rw http.ResponseWriter) {
+func NewRequest(db *gorm.DB, body *user.Friend, rw http.ResponseWriter) {
+
+  friend := Friend{DB:db}
+  res := friend.NewRequest(body)
+  response(res, rw)
 
 }
 
-func AcceptRequest(db *gorm.DB, c martini.Context, body *user.Friend,
-  rw http.ResponseWriter) {
+func AcceptRequest(db *gorm.DB, body *user.Friend, rw http.ResponseWriter) {
 
+  friend := Friend{DB:db}
+  res := friend.AcceptRequest(body)
+  response(res, rw)
+
+}
+
+func response(res datatype.Response, rw http.ResponseWriter){
+  resJson, err := json.Marshal(res)
+  if err != nil {
+    panic(err.Error())
+  }
+  //send json response
+  rw.Header().Set("content-Type", "application/json; charset=utf-8")
+  rw.WriteHeader(res.Status)
+  rw.Write(resJson)
 }
 

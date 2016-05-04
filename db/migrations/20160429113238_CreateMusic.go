@@ -10,7 +10,7 @@ func Up_20160429113238(txn *sql.Tx) {
 	var sql string = "create table if not exists music ( " +
 	  "id int(10) unsigned not null auto_increment, " +
 	  "created_at int(13) unsigned not null, " +
-	  "update_at int(13) unsigned not null, " +
+	  "updated_at int(13) unsigned not null, " +
 	  "name varchar(100) not null, " +
 	  "duration int(10) unsigned, " +
 	  "origin_id int(10) unsigned, " +

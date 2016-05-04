@@ -100,6 +100,6 @@ func CreateUser(u *models.User,body *user.Account){
 	u.Name = body.Name
 	u.Phone = body.Phone
 	u.CreatedAt = time.Now().Unix()
-	u.UpdateAt = time.Now().Unix()
+	u.UpdatedAt = time.Now().Unix()
 	u.Password = body.Password
 }

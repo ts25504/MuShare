@@ -2,12 +2,13 @@ package friend
 
 import (
   "net/http"
-  "github.com/go-martini/martini"
+  . "MuShare/manager/user/friend"
   "github.com/jinzhu/gorm"
   "MuShare/datatype/request/user"
 )
 
-func UnFollow(db *gorm.DB, c martini.Context, body *user.Friend,
-  rw http.ResponseWriter){
-
+func UnFollow(db *gorm.DB, body *user.Friend, rw http.ResponseWriter){
+  friend := Friend{DB:db}
+  res := friend.UnFollow(body)
+  response(res, rw)
 }

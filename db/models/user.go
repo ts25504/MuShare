@@ -16,7 +16,7 @@ type User struct {
   Albums      []Album     `gorm:"ForeignKey:UserID" json:"albums,omitempty"`
   Sheets      []Sheet     `gorm:"ForeignKey:UserID" json:"sheets,omitempty"`
   Subscribe   []Subscribe `gorm:"ForeignKey:UserID" json:"subscribe,omitempty"`
-  Token       string      `sql:"-" json:"token"`
+  Token       string      `sql:"-" json:"token,omitempty"`
 }
 
 func (User) TableName() string {

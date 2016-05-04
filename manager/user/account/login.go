@@ -10,8 +10,8 @@ import (
 
 func (this *Account) Login(body *user.Account) datatype.Response{
   var res datatype.Response
-  u := models.User{}
-  if (body.Password == "") {
+  user := models.User{}
+  if body.Password == "" {
     goto BadRequest
   }
 
@@ -20,17 +20,24 @@ func (this *Account) Login(body *user.Account) datatype.Response{
   }
 
   if body.Mail != "" {
-    this.DB.Where("mail=?", body.Mail).First(&u)
+    this.DB.Where("mail=?", body.Mail).First(&user)
   } else if body.Phone != "" {
-    this.DB.Where("phone=?", body.Phone).First(&u)
+    this.DB.Where("phone=?", body.Phone).First(&user)
   }else {
-    this.DB.Where("name=?", body.Name).First(&u)
+    this.DB.Where("name=?", body.Name).First(&user)
   }
-  if checkPassword(u, body.Password) {
-    goto Ok
-  } else {
+
+  if !checkPassword(user, body.Password) {
     goto Forbidden
   }
+
+  user.Token = utils.RandomTaken()
+  res = datatype.Response{
+    Status: http.StatusOK,
+    Body: user,
+  }
+  return res
+
 
   BadRequest:
   res = datatype.Response{
@@ -42,14 +49,6 @@ func (this *Account) Login(body *user.Account) datatype.Response{
   res = datatype.Response{
     Status:http.StatusForbidden,
     ResponseText: "Login Failed",
-  }
-  return res
-
-  Ok:
-  u.Token = utils.RandomTaken()
-  res = datatype.Response{
-    Status: http.StatusOK,
-    Body: u,
   }
   return res
 }

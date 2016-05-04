@@ -2,12 +2,13 @@ package friend
 
 import (
   "net/http"
-  "github.com/go-martini/martini"
   "github.com/jinzhu/gorm"
+  . "MuShare/manager/user/friend"
   "MuShare/datatype/request/user"
 )
 
-func GetFriendsList(db *gorm.DB, c martini.Context, body *user.Friend,
-  rw http.ResponseWriter){
-
+func GetFriendsList(db *gorm.DB, body *user.Friend, rw http.ResponseWriter){
+  friend := Friend{DB:db}
+  res := friend.List(body)
+  response(res, rw)
 }
