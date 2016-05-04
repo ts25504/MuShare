@@ -10,7 +10,7 @@
       "Password": "w19920610"
     },
     "App": {
-      "Port": "8080",
+      "Port": "7080",
       "Host": "localhost"
     }
   },
@@ -32,7 +32,7 @@
   "Production": {
     "Mysql": {
       "User": "root",
-      "Password": "",
+      "Password": "w19920610",
       "Database": "mushare"
     },
     "Redis": {
