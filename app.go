@@ -20,8 +20,10 @@ func main() {
     MaxAge: 60 * 60 * 60 * 24,
     HttpOnly: true,
   })
+
   //middleware
   m.Handlers(
+    middlewares.SetLogOutput,
     martini.Recovery(),
     martini.Logger(),
     sessions.Sessions("_session", store),

@@ -15,7 +15,7 @@ func TestUserInsert(t *testing.T) {
     Password:"w19920610",
   }
   user.CreatedAt = time.Now().Unix()
-  user.UpdateAt = time.Now().Unix()
+  user.UpdatedAt = time.Now().Unix()
   DB.Create(&user)
 }
 
