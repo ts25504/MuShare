@@ -21,12 +21,12 @@ func includePages(m *martini.ClassicMartini) {
 }
 
 func includeUserApi(m *martini.ClassicMartini) {
-  m.Group("/user/account", func(r martini.Router) {
+  m.Group("/api/user/account", func(r martini.Router) {
     r.Post("/login", account.Login, account.LoginSetToken)
     r.Post("/register", account.Register)
   }, RetrieveBody(reflect.TypeOf(user.Account{})))
 
-  m.Group("/user/friend", func(r martini.Router) {
+  m.Group("/api/user/friend", func(r martini.Router) {
     r.Get("/list", friend.GetFriendsList)
     r.Get("/request", friend.GetRequests)
     r.Post("/request", friend.NewRequest)
@@ -34,7 +34,7 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Delete("/delete", friend.UnFollow)
   }, RetrieveBody(reflect.TypeOf(user.Friend{})), friend.TokenAuth)
 
-  m.Group("/user/profile", func(r martini.Router) {
+  m.Group("/api/user/profile", func(r martini.Router) {
     r.Get("/:id")
     r.Put("update")
   })
