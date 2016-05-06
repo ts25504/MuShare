@@ -11,7 +11,6 @@ import (
 
 func TokenAuth(body *user.Friend, redis *redis.Client, rw http.ResponseWriter,
   req *http.Request) {
-  var err error
   var token string
   if(req.Method == http.MethodGet){
     body.FromID, _ = strconv.Atoi(req.URL.Query().Get("id"))
@@ -22,11 +21,7 @@ func TokenAuth(body *user.Friend, redis *redis.Client, rw http.ResponseWriter,
     goto Forbidden
   }
 
-  token, err = result.Result()
-
-  if err != nil {
-    panic(err.Error())
-  }
+  token, _ = result.Result()
 
   if(body.Token != token) {
     goto Forbidden
