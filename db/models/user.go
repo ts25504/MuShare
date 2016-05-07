@@ -8,10 +8,10 @@ type User struct {
   Avatar      string      `gorm:"" json:"avatar"`
   ScreenName  string      `gorm:"" json:"screenName"`
   Gender      int         `gorm:"" json:"gender"`
-  Birth       int64        `gorm:"" json:"birth"`
+  Birth       int64       `gorm:"" json:"birth"`
   Description string      `gorm:"" json:"description"`
   Password    string      `gorm:"" json:"-"`
-  LastLoginAt int64        `gorm:"" json:"-"`
+  LastLoginAt int64       `gorm:"" json:"-"`
   Friends     []Friends   `gorm:"ForeignKey:FromID" json:"friends,omitempty"`
   Albums      []Album     `gorm:"ForeignKey:UserID" json:"albums,omitempty"`
   Sheets      []Sheet     `gorm:"ForeignKey:UserID" json:"sheets,omitempty"`

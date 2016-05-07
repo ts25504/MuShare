@@ -1,8 +1,7 @@
 package models
 
 type Subscribe struct {
-  ID       uint  `gorm:""`
-  CreateAt uint  `gorm:""`
+  Model
   SheetID  uint  `gorm:""`
   UserID   uint  `gorm:""`
   Sheet    Sheet `gorm:"ForeignKey: SheetID"`

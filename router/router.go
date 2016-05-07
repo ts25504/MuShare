@@ -34,6 +34,14 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Delete("/delete", friend.UnFollow)
   }, RetrieveBody(reflect.TypeOf(user.Friend{})), friend.TokenAuth)
 
+  m.Group("/api/music/sheet", func(r martini.Router) {
+
+  })
+
+  m.Group("/api/music/audio", func(r martini.Router) {
+
+  })
+
   m.Group("/api/user/profile", func(r martini.Router) {
     r.Get("/:id")
     r.Put("update")

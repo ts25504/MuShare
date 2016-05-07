@@ -83,8 +83,6 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 		ResponseText: resText,
 	}
 	return res
-
-
 }
 
 func checkUser(user models.User) bool{

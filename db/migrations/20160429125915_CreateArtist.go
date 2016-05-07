@@ -12,7 +12,6 @@ func Up_20160429125915(txn *sql.Tx) {
 	  "created_at int(13) unsigned not null, " +
 	  "updated_at int(13) unsigned not null, " +
 	  "name varchar(100) not null, " +
-	  "privilege varchar(100), " +
 	  "user_id int(10) unsigned, " +
 	  "PRIMARY KEY(id) " + ")"
   stmt, err := txn.Prepare(sql)

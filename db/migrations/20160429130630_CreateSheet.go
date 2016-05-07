@@ -13,7 +13,6 @@ func Up_20160429130630(txn *sql.Tx) {
     "updated_at int(13) unsigned not null, " +
     "name varchar(100) not null, " +
     "privilege varchar(100) not null, " +
-    "sheet_id int(10) unsigned not null, " +
 	  "user_id int(10) unsigned not null, " +
 	  "PRIMARY KEY(id) " + ")"
   stmt, err := txn.Prepare(sql)
