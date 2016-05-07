@@ -6,11 +6,13 @@ import (
   "MuShare/utils"
   "net/http"
   "MuShare/datatype/request/user"
+  "time"
 )
 
 func (this *Account) Login(body *user.Account) datatype.Response{
   var res datatype.Response
   user := models.User{}
+  tx := this.DB.Begin()
   if body.Password == "" {
     goto BadRequest
   }
@@ -20,16 +22,19 @@ func (this *Account) Login(body *user.Account) datatype.Response{
   }
 
   if body.Mail != "" {
-    this.DB.Where("mail=?", body.Mail).First(&user)
+    tx.Where("mail=?", body.Mail).First(&user)
   } else if body.Phone != "" {
-    this.DB.Where("phone=?", body.Phone).First(&user)
+    tx.Where("phone=?", body.Phone).First(&user)
   }else {
-    this.DB.Where("name=?", body.Name).First(&user)
+    tx.Where("name=?", body.Name).First(&user)
   }
 
   if !checkPassword(user, body.Password) {
     goto Forbidden
   }
+
+  tx.Model(&user).Update(models.User{LastLoginAt:time.Now().Unix()})
+  tx.Commit()
 
   user.Token = utils.RandomTaken()
   res = datatype.Response{
