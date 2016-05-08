@@ -8,7 +8,7 @@ import (
   "MuShare/controllers/api/user/friend"
   "MuShare/datatype/request/user"
   "reflect"
-  "MuShare/controllers/api/sheet"
+  "MuShare/controllers/api/music/sheet"
   "MuShare/datatype/request"
 )
 
@@ -37,8 +37,8 @@ func includeUserApi(m *martini.ClassicMartini) {
   }, RetrieveBody(reflect.TypeOf(user.Friend{})), friend.TokenAuth)
 
   m.Group("/api/music/sheet", func(r martini.Router) {
-
-  })
+    r.Post("/create", sheet.Create)
+  }, RetrieveBody(reflect.TypeOf(request.Sheet{})))
 
   m.Group("/api/music/audio", func(r martini.Router) {
 
@@ -49,8 +49,5 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Put("update")
   })
 
-  m.Group("/api/sheet", func(r martini.Router) {
-    r.Post("/create", sheet.Create)
-  }, RetrieveBody(reflect.TypeOf(request.Sheet{})))
 
 }

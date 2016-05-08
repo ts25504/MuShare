@@ -7,6 +7,8 @@ import (
 	"time"
 	"regexp"
   "MuShare/datatype/request/user"
+	"fmt"
+	"strconv"
 )
 
 func (this *Account) Register(body *user.Account)  datatype.Response{
@@ -14,8 +16,9 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 	//check mail
 	reg := regexp.MustCompile(`^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$`)
 	sel := [...]bool{true, true, true}
-
 	u := models.User{}
+	sheet := models.Sheet{}
+
 	flag := 0
   // begin transaction
   tx := this.DB.Begin()
@@ -52,8 +55,17 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 
 	CreateUser(&u, body)
 	tx.Create(&u)
-  // transaction commit
-  tx.Commit()
+	//Create default sheet for user
+	tx.Where("mail=?", body.Mail).First(&u)
+	sheet.UserID = uint(u.ID)
+	fmt.Println(sheet.UserID)
+	sheet.Name = "default#" + strconv.Itoa(u.ID)
+	sheet.Privilege = "pravicy"
+	sheet.CreatedAt = time.Now().Unix()
+	sheet.UpdatedAt = time.Now().Unix()
+	tx.Create(&sheet)
+	// transaction commit
+	tx.Commit()
 
 	res = datatype.Response{
 		Status: http.StatusOK,

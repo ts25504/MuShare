@@ -29,6 +29,7 @@ func (this *Sheet) Create(body *request.Sheet) datatype.Response{
 	tx.Commit()
 	res = datatype.Response{
     Status: http.StatusOK,
+		ResponseText: "success",
   }
 	return res
 
