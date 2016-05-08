@@ -7,7 +7,6 @@ import (
 	"time"
 	"regexp"
   "MuShare/datatype/request/user"
-	"fmt"
 	"strconv"
 )
 
@@ -57,8 +56,7 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 	tx.Create(&u)
 	//Create default sheet for user
 	tx.Where("mail=?", body.Mail).First(&u)
-	sheet.UserID = uint(u.ID)
-	fmt.Println(sheet.UserID)
+	sheet.UserID = u.ID
 	sheet.Name = "default#" + strconv.Itoa(u.ID)
 	sheet.Privilege = "pravicy"
 	sheet.CreatedAt = time.Now().Unix()

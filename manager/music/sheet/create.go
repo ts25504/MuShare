@@ -1,14 +1,14 @@
 package sheet
 
 import (
-	"MuShare/datatype/request"
+	"MuShare/datatype/request/music"
 	"MuShare/datatype"
 	"MuShare/db/models"
 	"net/http"
 	"time"
 )
 
-func (this *Sheet) Create(body *request.Sheet) datatype.Response{
+func (this *Sheet) Create(body *music.Sheet) datatype.Response{
 	var res datatype.Response
 	sheet := models.Sheet{}
 	tx := this.DB.Begin()
@@ -47,7 +47,7 @@ func (this *Sheet) Create(body *request.Sheet) datatype.Response{
 	return res
 }
 
-func CreateSheet(body *request.Sheet, sheet *models.Sheet) {
+func CreateSheet(body *music.Sheet, sheet *models.Sheet) {
 	sheet.Name = body.Name
 	sheet.Privilege = body.Privilege
 	sheet.UserID = body.UserID

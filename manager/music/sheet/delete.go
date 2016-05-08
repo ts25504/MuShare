@@ -1,3 +1,3 @@
 package sheet
 
-func (self *Sheet) DeleteSheet()
+//func (self *Sheet) DeleteSheet()

@@ -1,20 +1,20 @@
 package music
 
-type sheet struct {
-  UserId    int
+type Sheet struct {
+  UserID    int
   Token     string
   SheetId   int
   Name      string
   Privilege string
 }
 
-type audio struct {
-  UserId     int
+type Audio struct {
+  UserID     int
   Token      string
   Name       string
   AudioUrl   string
   CoverUrl   string
-  ArtistId   int
+  ArtistID   int
   ArtistName int
-  SheetId    int
+  SheetID    int
 }

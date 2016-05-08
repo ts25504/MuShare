@@ -9,7 +9,7 @@ import (
   "MuShare/datatype/request/user"
   "reflect"
   "MuShare/controllers/api/music/sheet"
-  "MuShare/datatype/request"
+  "MuShare/datatype/request/music"
 )
 
 func Include(m *martini.ClassicMartini) {
@@ -38,7 +38,7 @@ func includeUserApi(m *martini.ClassicMartini) {
 
   m.Group("/api/music/sheet", func(r martini.Router) {
     r.Post("/create", sheet.Create)
-  }, RetrieveBody(reflect.TypeOf(request.Sheet{})))
+  }, RetrieveBody(reflect.TypeOf(music.Sheet{})))
 
   m.Group("/api/music/audio", func(r martini.Router) {
 
