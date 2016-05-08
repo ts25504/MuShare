@@ -10,5 +10,5 @@ import (
 func GetFriendsList(db *gorm.DB, body *user.Friend, rw http.ResponseWriter){
   friend := Friend{DB:db}
   res := friend.List(body)
-  response(res, rw)
+  Response(res, rw)
 }

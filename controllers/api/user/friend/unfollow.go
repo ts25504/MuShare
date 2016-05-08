@@ -10,5 +10,5 @@ import (
 func UnFollow(db *gorm.DB, body *user.Friend, rw http.ResponseWriter){
   friend := Friend{DB:db}
   res := friend.UnFollow(body)
-  response(res, rw)
+  Response(res, rw)
 }
