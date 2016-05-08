@@ -13,7 +13,7 @@ func GetRequests(db *gorm.DB, body *user.Friend, rw http.ResponseWriter) {
 
   friend := Friend{DB:db}
   res := friend.Get(body)
-  response(res, rw)
+  Response(res, rw)
 
 }
 
@@ -21,7 +21,7 @@ func NewRequest(db *gorm.DB, body *user.Friend, rw http.ResponseWriter) {
 
   friend := Friend{DB:db}
   res := friend.NewRequest(body)
-  response(res, rw)
+  Response(res, rw)
 
 }
 
@@ -29,11 +29,11 @@ func AcceptRequest(db *gorm.DB, body *user.Friend, rw http.ResponseWriter) {
 
   friend := Friend{DB:db}
   res := friend.AcceptRequest(body)
-  response(res, rw)
+  Response(res, rw)
 
 }
 
-func response(res datatype.Response, rw http.ResponseWriter){
+func Response(res datatype.Response, rw http.ResponseWriter){
   resJson, err := json.Marshal(res)
   if err != nil {
     panic(err.Error())

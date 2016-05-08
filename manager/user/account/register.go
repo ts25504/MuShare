@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 	"regexp"
-  "fmt"
   "MuShare/datatype/request/user"
 )
 
@@ -15,7 +14,7 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 	//check mail
 	reg := regexp.MustCompile(`^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$`)
 	sel := [...]bool{true, true, true}
-  fmt.Println(sel)
+
 	u := models.User{}
 	flag := 0
   // begin transaction

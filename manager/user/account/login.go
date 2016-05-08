@@ -33,7 +33,7 @@ func (this *Account) Login(body *user.Account) datatype.Response{
     goto Forbidden
   }
 
-  tx.Model(&user).Update(models.User{LastLoginAt:time.Now().Unix()})
+  tx.Model(&user).UpdateColumns(models.User{LastLoginAt:time.Now().Unix()})
   tx.Commit()
 
   user.Token = utils.RandomTaken()

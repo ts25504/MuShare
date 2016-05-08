@@ -8,6 +8,8 @@ import (
   "MuShare/controllers/api/user/friend"
   "MuShare/datatype/request/user"
   "reflect"
+  "MuShare/controllers/api/sheet"
+  "MuShare/datatype/request"
 )
 
 func Include(m *martini.ClassicMartini) {
@@ -38,5 +40,9 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Get("/:id")
     r.Put("update")
   })
-}
 
+  m.Group("/api/sheet", func(r martini.Router) {
+    r.Post("/create", sheet.Create)
+  }, RetrieveBody(reflect.TypeOf(request.Sheet{})))
+
+}
