@@ -6,6 +6,7 @@ import (
 	"MuShare/db/models"
 	"net/http"
 	"time"
+	"strconv"
 )
 
 func (this *Sheet) Create(body *music.Sheet) datatype.Response{
@@ -18,9 +19,14 @@ func (this *Sheet) Create(body *music.Sheet) datatype.Response{
     goto BadRequest
   }
 
-	tx.Where("id=?", body.UserID).First(&u)
+	tx.Where("id = ?", strconv.Itoa(body.UserID)).First(&u)
 
 	if u.ID == 0{
+		goto Forbidden
+	}
+	//One user cannot create sheet with same name
+	tx.Where("user_id = ? AND name = ?",strconv.Itoa(u.ID),body.Name).First(&sheet)
+	if sheet.ID != 0 {
 		goto Forbidden
 	}
 
@@ -42,7 +48,7 @@ func (this *Sheet) Create(body *music.Sheet) datatype.Response{
 	Forbidden:
 	res = datatype.Response{
     Status: http.StatusForbidden,
-		ResponseText: "not available user",
+		ResponseText: "not available user or same sheet name for the user",
   }
 	return res
 }

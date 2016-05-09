@@ -6,7 +6,7 @@ type Sheet struct {
   Privilege string   `gorm:"" json:"privilege"`
   UserID    int     `gorm:"" json:"userId"`
   User      User     `gorm:"ForeignKey:UserID" json:"user,omitempty"`
-  Music     []Music  `gorm:"ForeignKey:SheetID" json:"music, omiempty"`
+  Audios    []Audio  `gorm:"ForeignKey:SheetID" json:"audio, omiempty"`
 }
 
 func (Sheet) TableName() string{

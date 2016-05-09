@@ -3,11 +3,11 @@ package models
 type Audio struct {
   Model
   Name       string  `gorm:"" json:"name"`
-  Duration   uint    `gorm:"" json:"duration"`
+  Duration   int    `gorm:"" json:"duration"`
   AudioUrl   string  `gorm:""`
-  CoverUrl   string  `gorm:""`
-  ArtistID   uint    `gorm:"" json:"artistId"`
-  SheetID    uint    `gorm:""`
+  ImageUrl   string  `gorm:""`
+  ArtistID   int    `gorm:"" json:"artistId"`
+  SheetID    int    `gorm:""`
   Artist     Artist  `gorm:"ForeignKey:ArtistID" json:"artist,omitempty"`
   Sheet      Sheet   `gorm:"ForeignKey:SheetID" json:"sheet,omitempty"`
 }
