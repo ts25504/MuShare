@@ -40,11 +40,13 @@ func includeUserApi(m *martini.ClassicMartini) {
   m.Group("/api/music/sheet", func(r martini.Router) {
     r.Post("/create", sheet.Create)
     r.Delete("/delete",sheet.Delete)
+    r.Get("/list",sheet.ListSheet)
   }, RetrieveBody(reflect.TypeOf(music.Sheet{})))
 
   m.Group("/api/music/audio", func(r martini.Router) {
     r.Post("/add", audio.AddAudio)
     r.Delete("/delete", audio.DeleteAudio)
+    r.Get("/list", audio.GetAudiosList)
   },RetrieveBody(reflect.TypeOf(music.Audio{})))
 
   m.Group("/api/user/profile", func(r martini.Router) {

@@ -9,7 +9,7 @@ import (
   "strconv"
 )
 
-const  stateRequest = "request"
+const stateRequest = "request"
 const stateAgree = "agree"
 
 func (this *Friend) Get(body *user.Friend) datatype.Response {
