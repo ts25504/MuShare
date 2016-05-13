@@ -50,7 +50,7 @@ func (this *Sheet) ListSheet(body *music.Sheet) datatype.Response{
 				strconv.Itoa(body.RequestToID), priPublic).Find(&sheets)
 
 		}else {
-			tx.Where("user_id = ? AND privilege = (?)",
+			tx.Where("user_id = ? AND privilege in (?)",
 				strconv.Itoa(body.RequestToID), []string{priPublic, priFriend}).Find(&sheets)
 		}
 	}

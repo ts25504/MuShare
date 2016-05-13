@@ -1,9 +1,9 @@
 package music
 
 type Sheet struct {
-  UserID        int
   Token         string
   Name          string
+  UpdateName    string
   Privilege     string
   RequestFromID int
   RequestToID   int
@@ -12,11 +12,12 @@ type Sheet struct {
 type Audio struct {
   Token         string
   Name          string
+  UpdateName    string
   AudioUrl      string
   ImageUrl      string
   ArtistID      int
   ArtistName    int
   SheetID       int
-  RequestUserID int
+  RequestFromID int
 }
 

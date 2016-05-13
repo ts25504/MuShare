@@ -31,6 +31,10 @@ func (this *Audio) AddAudio(body *music.Audio) datatype.Response{
 		goto Forbidden
 	}
 
+	if sheet.UserID != body.RequestFromID{
+		goto Forbidden
+	}
+
 	CreateMusic(body, &audio)
 	tx.Create(&audio)
 	tx.Commit()

@@ -15,11 +15,11 @@ func (this *Sheet) Create(body *music.Sheet) datatype.Response{
 	tx := this.DB.Begin()
 	u := models.User{}
 
-	if body.UserID == 0 {
+	if body.RequestFromID == 0 {
     goto BadRequest
   }
 
-	tx.Where("id = ?", strconv.Itoa(body.UserID)).First(&u)
+	tx.Where("id = ?", strconv.Itoa(body.RequestFromID)).First(&u)
 
 	if u.ID == 0{
 		goto Forbidden
@@ -56,7 +56,7 @@ func (this *Sheet) Create(body *music.Sheet) datatype.Response{
 func CreateSheet(body *music.Sheet, sheet *models.Sheet) {
 	sheet.Name = body.Name
 	sheet.Privilege = body.Privilege
-	sheet.UserID = body.UserID
+	sheet.UserID = body.RequestFromID
 	sheet.CreatedAt = time.Now().Unix()
 	sheet.UpdatedAt = time.Now().Unix()
 }

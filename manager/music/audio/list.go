@@ -30,17 +30,25 @@ func (this *Audio) ListAudio(body *music.Audio) datatype.Response{
 		goto Forbidden
 	}
 
+	if sheet.UserID == body.RequestFromID{
+		goto OK
+	}
+
 	if sheet.Privilege == priPrivacy{
-		if body.RequestUserID != sheet.UserID{
+		if body.RequestFromID != sheet.UserID{
 			goto Forbidden
 		}
 	}else if sheet.Privilege == priFriend {
 		tx.Where("from_id = ? AND to_id = ?",
-		strconv.Itoa(body.RequestUserID),strconv.Itoa(sheet.UserID)).First(&friend)
+		strconv.Itoa(body.RequestFromID),strconv.Itoa(sheet.UserID)).First(&friend)
 		if friend.ID == 0{
 			goto Forbidden
 		}
+	}else{
+		goto OK
 	}
+
+	OK:
 	tx.Where("sheet_id = ?",
 		strconv.Itoa(body.SheetID)).Find(&audios)
 	tx.Commit()
