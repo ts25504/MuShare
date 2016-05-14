@@ -21,8 +21,8 @@ func (this *Friend) Get(body *user.Friend) datatype.Response {
     goto BadRequest
   }
 
-  tx.Where("from_id = ? AND state = ?",
-    strconv.Itoa(body.FromID), stateRequest).Find(&friends)
+  tx.Where("to_id = ? AND state = ?",
+    strconv.Itoa(body.ToID), stateRequest).Find(&friends)
 
   for i, _ := range friends {
     tx.Model(&friends[i]).Related(&friends[i].User, "User")

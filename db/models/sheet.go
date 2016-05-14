@@ -4,7 +4,7 @@ type Sheet struct {
   Model
   Name      string   `gorm:"" json:"name"`
   Privilege string   `gorm:"" json:"privilege"`
-  UserID    int     `gorm:"" json:"userId"`
+  UserID    int      `gorm:"" json:"userId"`
   User      User     `gorm:"ForeignKey:UserID" json:"user,omitempty"`
   Audios    []Audio  `gorm:"ForeignKey:SheetID" json:"audio, omiempty"`
 }

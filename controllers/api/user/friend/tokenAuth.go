@@ -13,7 +13,7 @@ func TokenAuth(body *user.Friend, redis *redis.Client, rw http.ResponseWriter,
   req *http.Request) {
   var token string
   if(req.Method == http.MethodGet){
-    body.FromID, _ = strconv.Atoi(req.URL.Query().Get("id"))
+    body.ToID, _ = strconv.Atoi(req.URL.Query().Get("id"))
     body.Token = req.URL.Query().Get("token")
   }
   result := redis.HGet("login", strconv.Itoa(body.FromID))
