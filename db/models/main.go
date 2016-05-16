@@ -6,12 +6,10 @@ import (
 )
 
 type Model struct {
-  ID        int `gorm:"" json:"id"`
+  ID        int   `gorm:"" json:"id"`
   CreatedAt int64 `gorm:"" json:"-"`
   UpdatedAt int64 `gorm:"" json:"-"`
 }
-
-
 
 func New(mysql conf.Mysql) *gorm.DB {
   db, err := gorm.Open("mysql",

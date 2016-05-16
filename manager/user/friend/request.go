@@ -3,9 +3,7 @@ package friend
 import (
   "MuShare/datatype/request/user"
   "MuShare/datatype"
-  "net/http"
   "MuShare/db/models"
-  "time"
   "strconv"
 )
 
@@ -13,124 +11,102 @@ const stateRequest = "request"
 const stateAgree = "agree"
 
 func (this *Friend) Get(body *user.Friend) datatype.Response {
-  var res datatype.Response
   friends := []models.Friends{}
   tx := this.DB.Begin()
 
-  if body.FromID == 0 {
-    goto BadRequest
+  if body.UserID == 0 {
+    return badRequest("")
   }
 
-  tx.Where("to_id = ? AND state = ?",
-    strconv.Itoa(body.ToID), stateRequest).Find(&friends)
+  tx.Where("friend_id = ? AND state = ?",
+    strconv.Itoa(body.UserID), stateRequest).Find(&friends)
 
   for i, _ := range friends {
     tx.Model(&friends[i]).Related(&friends[i].User, "User")
   }
-
   tx.Commit()
-  res.Status = http.StatusOK
-  res.Body = friends
-  return res
 
-  BadRequest:
-  res = datatype.Response{
-    Status: http.StatusBadRequest,
+
+  res := make([]models.User, 0)
+
+  for _, item := range friends {
+    res = append(res, item.User)
   }
-  return res
+  return ok("", res)
 }
 
 func (this *Friend) NewRequest(body *user.Friend) datatype.Response {
-  var res datatype.Response
   toUser := models.User{}
   friend := models.Friends{}
   tx := this.DB.Begin()
 
-  if body.FromID == 0 || body.ToID == 0 {
-    goto BadRequest
+  if body.UserID == 0 || body.FriendID == 0 {
+    return badRequest("")
   }
 
-  toUser.ID = body.ToID
+  toUser.ID = body.FriendID
 
   tx.First(&toUser)
 
   if toUser.Mail == "" {
-    goto Forbidden
+    return forbidden("Request User Doesn't Exist")
   }
 
 
-  tx.Where("from_id=? AND to_id=?", strconv.Itoa(body.FromID),
-    strconv.Itoa(body.ToID)).First(&friend)
+  tx.Where("user_id=? AND friend_id=?", strconv.Itoa(body.UserID),
+    strconv.Itoa(body.FriendID)).First(&friend)
 
   if !tx.NewRecord(&friend) {
-    goto Forbidden
+    return forbidden("Already Request")
   }
 
-  friend.FromID = body.FromID
-  friend.ToID = body.ToID
+  friend.UserID = body.UserID
+  friend.FriendID = body.FriendID
   friend.State = stateRequest
-  friend.CreatedAt = time.Now().Unix()
-  friend.UpdatedAt = time.Now().Unix()
 
   tx.Create(&friend)
 
   tx.Commit()
 
-  res.Status = http.StatusOK
-  return res
+  return ok("", nil)
 
-  BadRequest:
-  res = datatype.Response{
-    Status: http.StatusBadRequest,
-  }
-  return res
-
-  Forbidden:
-  res = datatype.Response{
-    Status:http.StatusForbidden,
-    ResponseText: "Operation not accepted",
-  }
-  return res
 }
 
 func (this *Friend) AcceptRequest(body *user.Friend) datatype.Response {
-  var res datatype.Response
-  friend := models.Friends{}
+  friend1 := models.Friends{}
+  friend2 := models.Friends{}
   tx := this.DB.Begin()
 
-  if (body.FromID == 0 || body.ToID == 0) {
-    goto BadRequest
+  if (body.UserID == 0 || body.FriendID == 0) {
+    return badRequest("")
   }
 
-  tx.Where("from_id=? AND to_id=?", strconv.Itoa(body.FromID),
-    strconv.Itoa(body.ToID)).First(&friend)
+  tx.Where("user_id=? AND friend_id=?", strconv.Itoa(body.FriendID),
+    strconv.Itoa(body.UserID)).First(&friend1)
 
-  if tx.NewRecord(&friend) {
-    goto Forbidden
+  if tx.NewRecord(&friend1) {
+    return forbidden("User Doesn't Exist")
   }
 
-  if !tx.NewRecord(&friend) && friend.State != stateRequest {
-    goto Forbidden
+  if !tx.NewRecord(&friend1) && friend1.State != stateRequest {
+    return forbidden("Already Friends")
   }
 
-  friend.State = stateAgree;
-  friend.UpdatedAt = time.Now().Unix()
-  tx.Save(&friend)
+  tx.Model(&friend1).Updates(map[string]string{"state": stateAgree})
+
+  tx.Where("user_id=? AND friend_id=?", strconv.Itoa(body.UserID),
+    strconv.Itoa(body.FriendID)).First(&friend2)
+
+  if tx.NewRecord(&friend2) {
+    friend2.UserID = body.UserID
+    friend2.FriendID = body.FriendID
+    friend2.State = stateAgree
+    tx.Create(&friend2)
+  } else {
+    tx.Model(&friend2).Updates(map[string]string{"state": stateAgree})
+  }
 
   tx.Commit()
-  res.Status = http.StatusOK
-  return res
 
-  BadRequest:
-  res = datatype.Response{
-    Status: http.StatusBadRequest,
-  }
-  return res
-
-  Forbidden:
-  res = datatype.Response{
-    Status:http.StatusForbidden,
-    ResponseText: "Operation not accepted",
-  }
-  return res
+  return ok("", nil)
 }

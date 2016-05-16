@@ -9,24 +9,40 @@ import (
 
 func (this *Friend) UnFollow(body *user.Friend) datatype.Response {
   var res datatype.Response
-  friend := models.Friends{}
+  friend1 := models.Friends{}
+  friend2 := models.Friends{}
   tx := this.DB.Begin()
 
-  if body.FromID == 0 || body.ToID == 0 {
+  if body.UserID == 0 || body.FriendID == 0 {
     goto BadRequest
   }
 
-  tx.Where("from_id=? AND to_id=?", body.FromID, body.ToID).First(&friend)
+  tx.Where("user_id=? AND friend_id=?",
+    body.UserID, body.FriendID).First(&friend1)
 
-  if tx.NewRecord(&friend) {
+  if tx.NewRecord(&friend1) {
     goto Forbidden
   }
 
-  if !tx.NewRecord(&friend) && friend.State == stateRequest {
+  if !tx.NewRecord(&friend1) && friend1.State == stateRequest {
     goto Forbidden
   }
 
-  tx.Delete(&friend)
+  tx.Delete(&friend1)
+
+  tx.Where("user_id=? AND friend_id=?",
+    body.FriendID, body.UserID).First(&friend2)
+
+  if tx.NewRecord(&friend2) {
+    goto Forbidden
+  }
+
+  if !tx.NewRecord(&friend2) && friend2.State == stateRequest {
+    goto Forbidden
+  }
+
+  tx.Delete(&friend2)
+
   tx.Commit()
 
   res.Status = http.StatusOK

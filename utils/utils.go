@@ -16,8 +16,15 @@ func JsonDecoder(r io.Reader, v interface{}) error {
   return nil
 }
 
-func RandomTaken() string {
+func TokenEncode(userId string) string{
   b := make([]byte, 10)
   rand.Read(b)
-  return base64.URLEncoding.EncodeToString(b)
+  src := append([]byte(userId + ":"),b...)
+  dst := base64.URLEncoding.EncodeToString(src)
+  return dst
+}
+
+func TokenDecode(src string) (string, error){
+  dst, err := base64.URLEncoding.DecodeString(src)
+  return string(dst), err
 }

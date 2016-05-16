@@ -24,7 +24,7 @@ func main() {
   //middleware
   m.Handlers(
     middlewares.SetLogOutput,
-    martini.Recovery(),
+    middlewares.Recovery(),
     martini.Logger(),
     sessions.Sessions("_session", store),
     martini.Static("static", martini.StaticOptions{}),
