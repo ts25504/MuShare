@@ -4,10 +4,9 @@ import (
   "MuShare/datatype/request/user"
   "MuShare/datatype"
   "MuShare/db/models"
-  "strconv"
 )
 
-func (this *Friend) List(body *user.Friend) datatype.Response{
+func (this *Friend) List(body *user.Friend) datatype.Response {
   friends := []models.Friends{}
   tx := this.DB.Begin()
 
@@ -15,15 +14,10 @@ func (this *Friend) List(body *user.Friend) datatype.Response{
     return badRequest("")
   }
 
-  tx.Where("user_id = ? AND state = ?",
-    strconv.Itoa(body.UserID), stateAgree).Find(&friends)
-
-  for i, _ := range friends {
-    tx.Model(&friends[i]).Related(&friends[i].Friend, "Friend")
-  }
+  tx.Preload("Friend").Where("user_id=? AND state=?",
+    body.UserID, stateAgree).Find(&friends)
 
   tx.Commit()
-
 
   res := make([]models.User, 0)
 

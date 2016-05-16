@@ -23,6 +23,7 @@ func TestUserQuery(t *testing.T) {
   user := models.User{Name:"shuai"}
   DB.First(&user)
   DB.Model(&user).Related(&user.Friends, "Friends")
+  DB.Preload("Friend").Where("user_id=?", user.ID).Find(&user.Friends)
   fmt.Println(user)
 }
 

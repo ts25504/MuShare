@@ -18,12 +18,9 @@ func (this *Friend) Get(body *user.Friend) datatype.Response {
     return badRequest("")
   }
 
-  tx.Where("friend_id = ? AND state = ?",
-    strconv.Itoa(body.UserID), stateRequest).Find(&friends)
+  tx.Preload("User").Where("friend_id=? AND state=?",
+    body.UserID, stateRequest).Find(&friends)
 
-  for i, _ := range friends {
-    tx.Model(&friends[i]).Related(&friends[i].User, "User")
-  }
   tx.Commit()
 
 
