@@ -25,8 +25,8 @@ rw http.ResponseWriter, req *http.Request) {
   r := regexp.MustCompile(`\s*(?P<token>.{10,})\s*`)
   group := make(map[string]string)
   match := r.FindStringSubmatch(req.Header.Get("Authorization"))
-  if len(match) < 1 {
-    forbidden("User Auth Failed", rw)
+  if len(match) < 2 {
+    Unauthorized("User Auth Failed", rw)
     return
   }
   for i, name := range r.SubexpNames() {
@@ -45,7 +45,7 @@ rw http.ResponseWriter, req *http.Request) {
   result := redis.HGet("login", userId)
   expectToken, _ = result.Result()
   if expectToken != encodeToken {
-    forbidden("User Auth Failed", rw)
+    Unauthorized("User Auth Failed", rw)
     return
   }
 
@@ -64,7 +64,7 @@ func setUserId(c martini.Context, typ reflect.Type, userId string) {
   }
 }
 
-func forbidden(responseText string, rw http.ResponseWriter) {
+func Unauthorized(responseText string, rw http.ResponseWriter) {
   rw.Header().Set("Content-Type", "application/json;charset=utf-8")
   rw.WriteHeader(http.StatusUnauthorized)
   res, _ := json.Marshal(datatype.Response{

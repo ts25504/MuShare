@@ -6,7 +6,7 @@ import (
   "github.com/go-martini/martini"
 )
 
-func SetLogOutput(logger *log.Logger, c martini.Context) {
+func LogOutput(logger *log.Logger, c martini.Context) {
   if martini.Env == "test" {
     return
   }
