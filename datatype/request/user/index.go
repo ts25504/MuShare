@@ -11,3 +11,14 @@ type Friend struct {
   UserID   int
   FriendID int
 }
+
+type Profile struct {
+  UserID      interface{}
+  Name        interface{}
+  Avatar      interface{}
+  Gender      interface{}
+  Birth       interface{}
+  Phone       interface{}
+  Description interface{}
+}
+

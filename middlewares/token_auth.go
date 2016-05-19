@@ -49,19 +49,25 @@ rw http.ResponseWriter, req *http.Request) {
     return
   }
 
-  setUserId(c, typ, userId)
+  if !setUserId(c, typ, userId) {
+    Unauthorized("User Auth Failed", rw)
+  }
 }
 
-func setUserId(c martini.Context, typ reflect.Type, userId string) {
+func setUserId(c martini.Context, typ reflect.Type, userId string) bool {
   body := c.Get(typ)
   e := body.Elem()
   if e.Kind() == reflect.Struct {
     value := e.FieldByName(UserIdField)
     if value.IsValid() && value.CanSet() {
-      id, _ := strconv.ParseInt(userId, 10, 64)
+      id, err := strconv.ParseInt(userId, 10, 64)
+      if err != nil {
+        return false
+      }
       value.SetInt(id)
     }
   }
+  return true
 }
 
 func Unauthorized(responseText string, rw http.ResponseWriter) {

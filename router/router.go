@@ -11,11 +11,13 @@ import (
   "MuShare/controllers/api/music/sheet"
   "MuShare/datatype/request/music"
   "MuShare/controllers/api/music/audio"
+  "MuShare/controllers/api/user/profile"
 )
 
 func Include(m *martini.ClassicMartini) {
   includePages(m)
   includeUserApi(m)
+  includeMusicApi(m)
 }
 
 func includePages(m *martini.ClassicMartini) {
@@ -37,11 +39,17 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Delete("/delete", friend.UnFollow)
   }, RetrieveBody(reflect.TypeOf(user.Friend{})), TokenAuth)
 
+  m.Group("/api/user/profile", func(r martini.Router) {
+    r.Put("/update", profile.UpdateProfile)
+  }, RetrieveBody(reflect.TypeOf(user.Profile{})))
+}
+
+func includeMusicApi(m *martini.ClassicMartini) {
   m.Group("/api/music/sheet", func(r martini.Router) {
     r.Post("/create", sheet.Create)
-    r.Delete("/delete",sheet.Delete)
-    r.Get("/list",sheet.ListSheet)
-    r.Put("/update",sheet.Update)
+    r.Delete("/delete", sheet.Delete)
+    r.Get("/list", sheet.ListSheet)
+    r.Put("/update", sheet.Update)
   }, RetrieveBody(reflect.TypeOf(music.Sheet{})), TokenAuth)
 
   m.Group("/api/music/audio", func(r martini.Router) {
@@ -49,11 +57,4 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Delete("/delete", audio.DeleteAudio)
     r.Get("/list", audio.GetAudiosList)
   }, RetrieveBody(reflect.TypeOf(music.Audio{})), TokenAuth)
-
-  m.Group("/api/user/profile", func(r martini.Router) {
-    r.Get("/:id")
-    r.Put("update")
-  })
-
-
 }
