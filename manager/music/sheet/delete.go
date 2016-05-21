@@ -14,7 +14,7 @@ func (this *Sheet) DeleteSheet(body *music.Sheet) datatype.Response{
 	tx := this.DB.Begin()
 
 	if body.RequestFromID== 0{
-		goto BadRequest
+		return badRequest("")
 	}
 
 	//get id of sheet
@@ -28,15 +28,5 @@ func (this *Sheet) DeleteSheet(body *music.Sheet) datatype.Response{
 
 	tx.Delete(&sheet)
 	tx.Commit()
-	res = datatype.Response{
-		Status:http.StatusOK,
-	}
-	return res
-
-	BadRequest:
-	res = datatype.Response{
-		Status:http.StatusBadRequest,
-	}
-	return res
-
+  return ok("deleted",sheet)
 }

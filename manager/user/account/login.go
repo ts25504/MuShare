@@ -31,6 +31,7 @@ func (this *Account) Login(body *user.Account) datatype.Response{
 
   user.Token = utils.TokenEncode(strconv.Itoa(user.ID))
   return ok("", user)
+
 }
 
 func checkPassword(user models.User, password string) bool {

@@ -5,8 +5,6 @@ import (
 	"MuShare/datatype"
 	"MuShare/db/models"
 	"strconv"
-	"net/http"
-
 )
 
 const priFriend  = "friend"
@@ -14,7 +12,6 @@ const priPublic = "public"
 const stateAgree = "agree"
 
 func (this *Sheet) ListSheet(body *music.Sheet) datatype.Response{
-	var res datatype.Response
 	sheets := []models.Sheet{}
 
 	user := models.User{}
@@ -22,18 +19,18 @@ func (this *Sheet) ListSheet(body *music.Sheet) datatype.Response{
 	tx := this.DB.Begin()
 
 	if body.RequestFromID == 0 || body.RequestToID == 0{
-		goto BadRequest
+		return badRequest("")
 	}
 
 	tx.Where("id = ?",
 		strconv.Itoa(body.RequestFromID)).Find(&user)
 	if user.ID == 0{
-		goto Forbidden
+		return forbidden("no such request user")
 	}
 	tx.Where("id = ?",
 		strconv.Itoa(body.RequestToID)).Find(&user)
 	if user.ID == 0{
-		goto Forbidden
+		return forbidden("no such required user")
 	}
 
 	if body.RequestFromID == body.RequestToID{
@@ -56,25 +53,7 @@ func (this *Sheet) ListSheet(body *music.Sheet) datatype.Response{
 	}
 	tx.Commit()
 
-	res = datatype.Response{
-		Status:http.StatusOK,
-		Body:sheets,
-	}
-	return res
-
-	BadRequest:
-  	res = datatype.Response{
-    Status: http.StatusBadRequest,
-  }
-  return res
-
-
-	Forbidden:
-	res = datatype.Response{
-    Status: http.StatusForbidden,
-		ResponseText:"from_id or to_id is doesn't exist",
-  }
-  return res
+	return ok("", sheets)
 
 }
 
