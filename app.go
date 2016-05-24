@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-  conf := config.LoadConf(martini.Env)
   m := martini.Classic()
+  conf := config.LoadConf(martini.Env)
   //create new session middleware
   store := sessions.NewCookieStore([]byte("MushareSecret"))
   store.Options(sessions.Options{
@@ -23,14 +23,15 @@ func main() {
 
   //middleware
   m.Handlers(
-    middlewares.LogOutput,
-    middlewares.Recovery(),
-    martini.Logger(),
-    sessions.Sessions("_session", store),
-    martini.Static("static", martini.StaticOptions{}),
-    middlewares.InjectRedis(conf.Redis),
-    middlewares.InjectDB(conf.Mysql),
+  middlewares.LogOutput,
+  middlewares.Recovery(),
+  martini.Logger(),
+  sessions.Sessions("_session", store),
+  martini.Static("static", martini.StaticOptions{}),
+  middlewares.InjectRedis(conf.Redis),
+  middlewares.InjectDB(conf.Mysql),
   )
+  m.Map(conf)
 
   //routers
   router.Include(m)

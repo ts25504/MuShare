@@ -10,7 +10,7 @@ type Account struct {
   DB *gorm.DB
 }
 
-func ok(responseText string, body interface{}) datatype.Response{
+func ok(responseText string, body interface{}) datatype.Response {
   res := datatype.Response{
     Status: http.StatusOK,
     ResponseText: responseText,
@@ -20,7 +20,7 @@ func ok(responseText string, body interface{}) datatype.Response{
   return res
 }
 
-func badRequest(responseText string) datatype.Response{
+func badRequest(responseText string) datatype.Response {
   res := datatype.Response{
     Status: http.StatusBadRequest,
     ResponseText: responseText,
@@ -28,7 +28,7 @@ func badRequest(responseText string) datatype.Response{
   return res
 }
 
-func forbidden(responseText string) datatype.Response{
+func forbidden(responseText string) datatype.Response {
   res := datatype.Response{
     Status:http.StatusForbidden,
     ResponseText: responseText,

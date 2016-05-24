@@ -14,6 +14,7 @@ type Mysql struct {
 type Redis struct {
   Addr     string
   Password string
+  Prefix   string
 }
 
 type App  struct {

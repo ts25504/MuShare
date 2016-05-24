@@ -11,12 +11,13 @@ import (
   "reflect"
   "github.com/go-martini/martini"
   "strconv"
+  "MuShare/conf"
 )
 
 const UserIdField = "UserID"
 
 func TokenAuth(redis *redis.Client, c martini.Context, typ reflect.Type,
-rw http.ResponseWriter, req *http.Request) {
+rw http.ResponseWriter, req *http.Request, config *conf.Conf) {
 
   var err error
   var decodeToken string
@@ -42,7 +43,9 @@ rw http.ResponseWriter, req *http.Request) {
 
   userId := strings.Split(decodeToken, ":")[0]
 
-  result := redis.HGet("login", userId)
+  hSetKey := config.Redis.Prefix + "_token"
+  mapKey := "user_" + userId
+  result := redis.HGet(hSetKey, mapKey)
   expectToken, _ = result.Result()
   if expectToken != encodeToken {
     Unauthorized("User Auth Failed", rw)

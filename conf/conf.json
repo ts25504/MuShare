@@ -7,7 +7,8 @@
     },
     "Redis": {
       "Addr": "127.0.0.1:6379",
-      "Password": "w19920610"
+      "Password": "w19920610",
+      "Prefix" : "mushare_redis"
     },
     "App": {
       "Port": "7080",
@@ -22,7 +23,8 @@
     },
     "Redis": {
       "Addr": "127.0.0.1:6379",
-      "Password": ""
+      "Password": "",
+      "Prefix" : "mushare_redis"
     },
     "App": {
       "Port": "8080",
@@ -37,7 +39,8 @@
     },
     "Redis": {
       "Addr": "127.0.0.1",
-      "Password": "w19920610"
+      "Password": "w19920610",
+      "Prefix" : "mushare_redis"
     },
     "App": {
       "Port": "6000",
