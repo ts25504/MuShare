@@ -8,6 +8,7 @@ import (
 	"regexp"
   "MuShare/datatype/request/user"
 	"strconv"
+	"MuShare/utils"
 )
 
 func (this *Account) Register(body *user.Account)  datatype.Response{
@@ -17,7 +18,7 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 	sel := [...]bool{true, true, true}
 	u := models.User{}
 	sheet := models.Sheet{}
-
+	salt := models.Salts{}
 	flag := 0
   // begin transaction
   tx := this.DB.Begin()
@@ -52,7 +53,7 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 		}
 	}
 
-	CreateUser(&u, body)
+	CreateUser(&u, &salt, body)
 	tx.Create(&u)
 	//Create default sheet for user
 	tx.Where("mail=?", body.Mail).First(&u)
@@ -63,6 +64,9 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 	sheet.UpdatedAt = time.Now().Unix()
 	tx.Create(&sheet)
 	// transaction commit
+	salt.UserID = u.ID
+	tx.Create(&salt)
+
 	tx.Commit()
 
 	res = datatype.Response{
@@ -102,11 +106,13 @@ func checkUser(user models.User) bool{
 
 }
 
-func CreateUser(u *models.User,body *user.Account){
+func CreateUser(u *models.User, salt *models.Salts, body *user.Account){
 	u.Mail = body.Mail
 	u.Name = body.Name
 	u.Phone = body.Phone
 	u.CreatedAt = time.Now().Unix()
 	u.UpdatedAt = time.Now().Unix()
-	u.Password = body.Password
+	salt.Salt = utils.EncryptRandSequence(5)
+	DecodeSalt,_  := utils.TokenDecode(salt.Salt)
+	u.Password, _= utils.PsdHandler(body.Password, []byte(DecodeSalt))
 }

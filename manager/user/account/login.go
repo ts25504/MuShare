@@ -10,7 +10,10 @@ import (
 )
 
 func (this *Account) Login(body *user.Account) datatype.Response{
+  var decodeSolt string
   user := models.User{}
+  salt := models.Salts{}
+
   tx := this.DB.Begin()
   if body.Password == "" {
     return badRequest("")
@@ -21,8 +24,11 @@ func (this *Account) Login(body *user.Account) datatype.Response{
   }
 
   tx.Where("mail=?", body.Mail).First(&user)
+  tx.Where("user_id=?", user.ID).First(&salt)
+  decodeSolt, _ = utils.TokenDecode(salt.Salt)
+  checkPsd, _ := utils.PsdHandler(body.Password, []byte(decodeSolt))
 
-  if !checkPassword(user, body.Password) {
+  if !checkPassword(user, checkPsd) {
     return forbidden("Login Failed")
   }
 
