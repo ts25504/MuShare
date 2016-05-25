@@ -18,12 +18,12 @@ func (this *Sheet) ListSheet(body *music.Sheet) datatype.Response{
 	friend := models.Friends{}
 	tx := this.DB.Begin()
 
-	if body.RequestFromID == 0 || body.RequestToID == 0{
+	if body.UserID == 0 || body.RequestToID == 0{
 		return badRequest("")
 	}
 
 	tx.Where("id = ?",
-		strconv.Itoa(body.RequestFromID)).Find(&user)
+		strconv.Itoa(body.UserID)).Find(&user)
 	if user.ID == 0{
 		return forbidden("no such request user")
 	}
@@ -33,14 +33,14 @@ func (this *Sheet) ListSheet(body *music.Sheet) datatype.Response{
 		return forbidden("no such required user")
 	}
 
-	if body.RequestFromID == body.RequestToID{
+	if body.UserID== body.RequestToID{
 		tx.Where("user_id = ?",
-				strconv.Itoa(body.RequestFromID)).Find(&sheets)
+				strconv.Itoa(body.UserID)).Find(&sheets)
 
 	}else {
 		//detect whether friend or not
 		tx.Where("from_id = ? AND to_id = ? AND state = ?",
-			strconv.Itoa(body.RequestFromID), strconv.Itoa(body.RequestToID), stateAgree).First(&friend)
+			strconv.Itoa(body.UserID), strconv.Itoa(body.RequestToID), stateAgree).First(&friend)
 
 		if friend.ID == 0 {
 			tx.Where("user_id = ? AND privilege = ?",

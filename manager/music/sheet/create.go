@@ -13,11 +13,11 @@ func (this *Sheet) Create(body *music.Sheet) datatype.Response{
 	tx := this.DB.Begin()
 	u := models.User{}
 
-	if body.RequestFromID == 0 {
+	if body.UserID == 0 {
     return badRequest("0 fromid")
   }
 
-	tx.Where("id = ?", strconv.Itoa(body.RequestFromID)).First(&u)
+	tx.Where("id = ?", strconv.Itoa(body.UserID)).First(&u)
 
 	if u.ID == 0{
 		return badRequest("no such from id")
@@ -37,7 +37,7 @@ func (this *Sheet) Create(body *music.Sheet) datatype.Response{
 func CreateSheet(body *music.Sheet, sheet *models.Sheet) {
 	sheet.Name = body.Name
 	sheet.Privilege = body.Privilege
-	sheet.UserID = body.RequestFromID
+	sheet.UserID = body.UserID
 	sheet.CreatedAt = time.Now().Unix()
 	sheet.UpdatedAt = time.Now().Unix()
 }

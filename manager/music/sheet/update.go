@@ -12,11 +12,11 @@ func (this *Sheet) Update(body *music.Sheet) datatype.Response{
 	tx := this.DB.Begin()
 	u := models.User{}
 
-	if body.RequestFromID == 0 {
+	if body.UserID == 0 {
     return badRequest("")
   }
 
-	tx.Where("id = ?", strconv.Itoa(body.RequestFromID)).First(&u)
+	tx.Where("id = ?", strconv.Itoa(body.UserID)).First(&u)
 
 	if u.ID == 0{
 		return forbidden("no such user")
