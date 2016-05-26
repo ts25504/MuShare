@@ -2,8 +2,8 @@ package models
 
 type Subscribe struct {
   Model
-  SheetID  uint  `gorm:""`
-  UserID   uint  `gorm:""`
+  SheetID  int  `gorm:""`
+  UserID   int  `gorm:""`
   Sheet    Sheet `gorm:"ForeignKey: SheetID"`
 }
 

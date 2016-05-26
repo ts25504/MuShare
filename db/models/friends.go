@@ -6,14 +6,12 @@ import (
 )
 
 type Friends struct {
-  ID        int            `gorm:"" json:"-"`
-  CreatedAt int64          `gorm:"" json:"-"`
-  UpdatedAt int64          `gorm:"" json:"-"`
-  UserID    int            `gorm:"" json:"-"`
-  FriendID  int            `gorm:"" json:"friendId"`
-  State     string         `gorm:"" json:"-"`
-  User      User           `gorm:"ForeignKey:UserID" json:"user,omitempty"`
-  Friend    User           `gorm:"ForeignKey:FriendID" json:"friend,omitempty"`
+  Model
+  UserID   int            `gorm:"" json:"-"`
+  FriendID int            `gorm:"" json:"friendId"`
+  State    string         `gorm:"" json:"-"`
+  User     User           `gorm:"ForeignKey:UserID" json:"user,omitempty"`
+  Friend   User           `gorm:"ForeignKey:FriendID" json:"friend,omitempty"`
 }
 
 func (Friends) TableName() string {
