@@ -6,6 +6,7 @@ import (
   "MuShare/utils"
   "reflect"
   "log"
+  "strings"
 )
 
 func RetrieveBody(typ reflect.Type) martini.Handler {
@@ -13,10 +14,22 @@ func RetrieveBody(typ reflect.Type) martini.Handler {
     body := reflect.New(typ).Interface()
     c.Map(body)
     c.Map(reflect.TypeOf(body))
-    err := utils.JsonDecoder(req.Body, body)
-    if err != nil {
 
+    if req.Method == http.MethodGet {
+      rv := reflect.ValueOf(body).Elem()
+      for key, _ := range req.URL.Query()  {
+        value := req.URL.Query().Get(key)
+        field := strings.Title(key)
+        if rv.FieldByName(field).IsValid() && rv.FieldByName(field).CanSet() {
+          logger.Println(value)
+          rv.FieldByName(field).SetString(value)
+        }
+      }
+    } else {
+      utils.JsonDecoder(req.Body, body)
     }
+
+    c.Next()
     logger.Println(body)
   }
 }

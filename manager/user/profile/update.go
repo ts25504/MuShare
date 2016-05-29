@@ -12,9 +12,6 @@ func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
   user.ID = body.UserID.(int)
   update := make(map[string]interface{})
 
-  if body.Name == "" {
-    forbidden("Name Can't Be Null")
-  }
 
   if body.Name != nil {
     update["name"] = body.Name
@@ -38,6 +35,10 @@ func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
 
   if body.Description != nil {
     update["description"] = body.Description
+  }
+
+  if body.Name == "" {
+    badRequest("Name Can't Be Null")
   }
 
   err := tx.Model(&user).Updates(update).Error

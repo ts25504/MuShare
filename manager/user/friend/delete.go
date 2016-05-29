@@ -7,7 +7,7 @@ import (
   "MuShare/db/models"
 )
 
-func (this *Friend) UnFollow(body *user.Friend) datatype.Response {
+func (this *Friend) Delete(body *user.Friend) datatype.Response {
   var res datatype.Response
   friend1 := models.Friends{}
   friend2 := models.Friends{}

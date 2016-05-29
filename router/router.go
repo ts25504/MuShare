@@ -12,6 +12,7 @@ import (
   "MuShare/datatype/request/music"
   "MuShare/controllers/api/music/audio"
   "MuShare/controllers/api/user/profile"
+  "MuShare/controllers/api/user/Search"
 )
 
 func Include(m *martini.ClassicMartini) {
@@ -36,12 +37,16 @@ func includeUserApi(m *martini.ClassicMartini) {
     r.Get("/request", friend.GetRequests)
     r.Post("/request", friend.NewRequest)
     r.Put("/request", friend.AcceptRequest)
-    r.Delete("/delete", friend.UnFollow)
+    r.Delete("/delete", friend.Delete)
   }, RetrieveBody(reflect.TypeOf(user.Friend{})), TokenAuth)
 
   m.Group("/api/user/profile", func(r martini.Router) {
     r.Put("/update", profile.UpdateProfile)
   }, RetrieveBody(reflect.TypeOf(user.Profile{})))
+
+  m.Group("/api/user/search", func(r martini.Router) {
+    r.Get("/stranger", Search.Stranger)
+  }, RetrieveBody(reflect.TypeOf(user.Search{})), TokenAuth)
 }
 
 func includeMusicApi(m *martini.ClassicMartini) {

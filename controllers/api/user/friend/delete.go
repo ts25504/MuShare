@@ -7,8 +7,8 @@ import (
   "MuShare/datatype/request/user"
 )
 
-func UnFollow(db *gorm.DB, body *user.Friend, rw http.ResponseWriter){
+func Delete(db *gorm.DB, body *user.Friend, rw http.ResponseWriter){
   friend := Friend{DB:db}
-  res := friend.UnFollow(body)
+  res := friend.Delete(body)
   Response(res, rw)
 }

@@ -41,6 +41,10 @@ func (this *Friend) NewRequest(body *user.Friend) datatype.Response {
     return badRequest("")
   }
 
+  if body.UserID == body.FriendID {
+    return forbidden("Can't Follow Self")
+  }
+
   toUser.ID = body.FriendID
 
   tx.First(&toUser)
@@ -53,8 +57,12 @@ func (this *Friend) NewRequest(body *user.Friend) datatype.Response {
   tx.Where("user_id=? AND friend_id=?", strconv.Itoa(body.UserID),
     strconv.Itoa(body.FriendID)).First(&friend)
 
-  if !tx.NewRecord(&friend) {
+  if !tx.NewRecord(&friend) && friend.State == stateRequest{
     return forbidden("Already Request")
+  }
+
+  if !tx.NewRecord(&friend) && friend.State == stateAgree {
+    return forbidden("Already Friends")
   }
 
   friend.UserID = body.UserID
@@ -72,6 +80,7 @@ func (this *Friend) NewRequest(body *user.Friend) datatype.Response {
 func (this *Friend) AcceptRequest(body *user.Friend) datatype.Response {
   friend1 := models.Friends{}
   friend2 := models.Friends{}
+
   tx := this.DB.Begin()
 
   if (body.UserID == 0 || body.FriendID == 0) {
@@ -82,8 +91,9 @@ func (this *Friend) AcceptRequest(body *user.Friend) datatype.Response {
     strconv.Itoa(body.UserID)).First(&friend1)
 
   if tx.NewRecord(&friend1) {
-    return forbidden("User Doesn't Exist")
+    return forbidden("Request Doesn't Exist")
   }
+
 
   if !tx.NewRecord(&friend1) && friend1.State != stateRequest {
     return forbidden("Already Friends")
@@ -92,7 +102,7 @@ func (this *Friend) AcceptRequest(body *user.Friend) datatype.Response {
   tx.Model(&friend1).Updates(map[string]string{"state": stateAgree})
 
   tx.Where("user_id=? AND friend_id=?", strconv.Itoa(body.UserID),
-    strconv.Itoa(body.FriendID)).First(&friend2)
+  strconv.Itoa(body.FriendID)).First(&friend2)
 
   if tx.NewRecord(&friend2) {
     friend2.UserID = body.UserID
@@ -103,7 +113,19 @@ func (this *Friend) AcceptRequest(body *user.Friend) datatype.Response {
     tx.Model(&friend2).Updates(map[string]string{"state": stateAgree})
   }
 
+  if err := tx.Model(&friend1).Related(&friend1.User, "User").Error; err != nil {
+    panic(err.Error())
+  }
+
+  if err := tx.Model(&friend2).Related(&friend2.User, "User").Error; err != nil {
+    panic(err.Error())
+  }
+
+  if tx.NewRecord(&friend1.User) || tx.NewRecord(&friend2.User) {
+    return forbidden("User Doesn't Exit")
+  }
+
   tx.Commit()
 
-  return ok("", nil)
+  return ok("", friend1.User)
 }

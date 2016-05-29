@@ -23,13 +23,13 @@ func main() {
 
   //middleware
   m.Handlers(
-  middlewares.LogOutput,
-  middlewares.Recovery(),
-  martini.Logger(),
-  sessions.Sessions("_session", store),
-  martini.Static("static", martini.StaticOptions{}),
-  middlewares.InjectRedis(conf.Redis),
-  middlewares.InjectDB(conf.Mysql),
+    middlewares.LogOutput,
+    middlewares.Recovery(),
+    martini.Logger(),
+    sessions.Sessions("_session", store),
+    martini.Static("static", martini.StaticOptions{}),
+    middlewares.InjectRedis(),
+    middlewares.InjectDB(),
   )
   m.Map(conf)
 

@@ -7,11 +7,11 @@ import (
   redis "gopkg.in/redis.v3"
 )
 
-func InjectRedis(r conf.Redis) martini.Handler {
-  return func(c martini.Context, rw http.ResponseWriter) {
+func InjectRedis() martini.Handler {
+  return func(c martini.Context, rw http.ResponseWriter, config *conf.Conf) {
     client := redis.NewClient(&redis.Options{
-      Addr: r.Addr,
-      Password: r.Password,
+      Addr: config.Redis.Addr,
+      Password: config.Redis.Password,
       DB: 0,
     })
     _, err := client.Ping().Result()

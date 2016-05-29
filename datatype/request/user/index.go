@@ -14,11 +14,17 @@ type Friend struct {
 
 type Profile struct {
   UserID      interface{}
+  FriendID    interface{}
   Name        interface{}
   Avatar      interface{}
   Gender      interface{}
   Birth       interface{}
   Phone       interface{}
   Description interface{}
+}
+
+type Search struct {
+  UserID  int
+  Keyword string
 }
 
