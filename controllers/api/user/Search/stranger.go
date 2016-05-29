@@ -1,17 +1,17 @@
-package profile
+package Search
 
 import (
+  "encoding/json"
   "net/http"
+  "MuShare/datatype"
   "github.com/jinzhu/gorm"
   "MuShare/datatype/request/user"
-  ."MuShare/manager/user/profile"
-  "encoding/json"
-  "MuShare/datatype"
+  . "MuShare/manager/user/search"
 )
 
-func UpdateProfile(db *gorm.DB, body *user.Profile, rw http.ResponseWriter){
-  profile := Profile{DB:db}
-  res := profile.UpdateProfile(body)
+func Stranger(db *gorm.DB, body *user.Search, rw http.ResponseWriter){
+  search := Search{DB:db}
+  res := search.Search(body)
   Response(res, rw)
 }
 

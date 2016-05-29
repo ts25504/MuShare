@@ -16,7 +16,7 @@ import (
 
 func Login(db *gorm.DB, c martini.Context, body *user.Account, rw http.ResponseWriter) {
   if (db == nil) {
-    panic("db is not exist")
+    panic("DB Is Not Exist")
   }
 
   account := Account{DB:db}

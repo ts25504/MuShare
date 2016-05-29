@@ -9,6 +9,20 @@ import (
 func (this *Profile) GetProfile(body *user.Profile) datatype.Response {
   tx := this.DB.Begin()
   user := models.User{}
-  tx.Find(user, body.UserID)
+
+  if body.FriendID == nil || body.FriendID == 0 {
+     badRequest("")
+  }
+
+  if err := tx.Find(&user, body.FriendID); err != nil {
+    panic(err.Error)
+  }
+
+  if tx.NewRecord(&user) {
+    forbidden("User Doesn't Exsit")
+  }
+
+  tx.Commit()
+
   return ok("", user)
 }

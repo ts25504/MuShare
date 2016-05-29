@@ -17,7 +17,7 @@ func (this *Sheet) Subscribe(body *music.Sheet) datatype.Response {
   }
 
   if err := tx.Where("id=?", body.RequestToID).Find(&sheet).Error; err != nil {
-    panic(err)
+    panic(err.Error())
   }
 
   if tx.NewRecord(&sheet) {
@@ -30,7 +30,7 @@ func (this *Sheet) Subscribe(body *music.Sheet) datatype.Response {
 
   if err := tx.Where("user_id=? AND sheet_id=?", body.UserID,
     body.RequestToID).Find(&subscribe).Error; err != nil {
-    panic(err)
+    panic(err.Error())
   }
 
   if !tx.NewRecord(&subscribe) {
@@ -41,7 +41,7 @@ func (this *Sheet) Subscribe(body *music.Sheet) datatype.Response {
   subscribe.UserID = body.UserID
 
   if err := tx.Create(&subscribe).Error; err != nil {
-    panic(err)
+    panic(err.Error())
   }
 
   return ok("", nil)

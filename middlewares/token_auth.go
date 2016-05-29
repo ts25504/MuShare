@@ -38,7 +38,7 @@ rw http.ResponseWriter, req *http.Request, config *conf.Conf) {
   encodeToken = group["token"]
   decodeToken, err = utils.TokenDecode(group["token"])
   if err != nil {
-    panic("Token Decode Error")
+    panic(err.Error())
   }
 
   userId := strings.Split(decodeToken, ":")[0]
