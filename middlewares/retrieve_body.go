@@ -7,6 +7,7 @@ import (
   "reflect"
   "log"
   "strings"
+  "strconv"
 )
 
 func RetrieveBody(typ reflect.Type) martini.Handler {
@@ -22,7 +23,12 @@ func RetrieveBody(typ reflect.Type) martini.Handler {
         field := strings.Title(key)
         if rv.FieldByName(field).IsValid() && rv.FieldByName(field).CanSet() {
           logger.Println(value)
-          rv.FieldByName(field).SetString(value)
+          if strings.Contains(field, "ID"){
+            intValue, _ := strconv.Atoi(value)
+            rv.FieldByName(field).SetInt(int64(intValue))
+          }else {
+            rv.FieldByName(field).SetString(value)
+          }
         }
       }
     } else {

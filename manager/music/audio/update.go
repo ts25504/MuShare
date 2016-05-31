@@ -43,9 +43,11 @@ func (this *Audio) Update(body *music.Audio) datatype.Response{
 	//}
 
 	if body.SheetID != 0{
+		sheet.ID = 0
 		tx.Where("id = ? AND user_id = ?",strconv.Itoa(body.SheetID),strconv.Itoa(u.ID)).First(&sheet)
 		if sheet.ID == 0{
 			return forbidden("the terminal sheet doesn't exist or belong to the request user!")
+
 		}
 		audio.SheetID = body.SheetID
 	}

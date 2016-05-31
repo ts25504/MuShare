@@ -18,7 +18,7 @@ func (this *Sheet) ListSheet(body *music.Sheet) datatype.Response{
 	friend := models.Friends{}
 	tx := this.DB.Begin()
 
-	if body.UserID == 0 || body.RequestToID == 0{
+	if body.UserID == 0 || body.ToID == 0{
 		return badRequest("")
 	}
 
@@ -28,27 +28,27 @@ func (this *Sheet) ListSheet(body *music.Sheet) datatype.Response{
 		return forbidden("no such request user")
 	}
 	tx.Where("id = ?",
-		strconv.Itoa(body.RequestToID)).Find(&user)
+		strconv.Itoa(body.ToID)).Find(&user)
 	if user.ID == 0{
 		return forbidden("no such required user")
 	}
 
-	if body.UserID== body.RequestToID{
+	if body.UserID== body.ToID{
 		tx.Where("user_id = ?",
 				strconv.Itoa(body.UserID)).Find(&sheets)
 
 	}else {
 		//detect whether friend or not
-		tx.Where("from_id = ? AND to_id = ? AND state = ?",
-			strconv.Itoa(body.UserID), strconv.Itoa(body.RequestToID), stateAgree).First(&friend)
+		tx.Where("user_id = ? AND friend_id = ? AND state = ?",
+			strconv.Itoa(body.UserID), strconv.Itoa(body.ToID), stateAgree).First(&friend)
 
 		if friend.ID == 0 {
 			tx.Where("user_id = ? AND privilege = ?",
-				strconv.Itoa(body.RequestToID), priPublic).Find(&sheets)
+				strconv.Itoa(body.ToID), priPublic).Find(&sheets)
 
 		}else {
 			tx.Where("user_id = ? AND privilege in (?)",
-				strconv.Itoa(body.RequestToID), []string{priPublic, priFriend}).Find(&sheets)
+				strconv.Itoa(body.ToID), []string{priPublic, priFriend}).Find(&sheets)
 		}
 	}
 	tx.Commit()

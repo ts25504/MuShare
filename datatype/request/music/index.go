@@ -5,7 +5,7 @@ type Sheet struct {
   Name        string
   UpdateName  string
   Privilege   string
-  RequestToID int
+  ToID        int
 }
 
 type Audio struct {
