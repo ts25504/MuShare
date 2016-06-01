@@ -2,15 +2,12 @@ package middlewares
 
 import (
   "net/http"
-  "MuShare/datatype"
-  "encoding/json"
   "gopkg.in/redis.v3"
   "regexp"
   "MuShare/utils"
   "strings"
   "reflect"
   "github.com/go-martini/martini"
-  "strconv"
   "MuShare/conf"
 )
 
@@ -48,12 +45,12 @@ rw http.ResponseWriter, req *http.Request, config *conf.Conf) {
   result := redis.HGet(hSetKey, mapKey)
   expectToken, _ = result.Result()
   if expectToken != encodeToken {
-    Unauthorized("User Auth Failed", rw)
+    unauthorized("User Auth Failed", rw)
     return
   }
 
   if !setUserId(c, typ, userId) {
-    Unauthorized("User Auth Failed", rw)
+    unauthorized("User Auth Failed", rw)
   }
 }
 
@@ -63,22 +60,8 @@ func setUserId(c martini.Context, typ reflect.Type, userId string) bool {
   if e.Kind() == reflect.Struct {
     value := e.FieldByName(UserIdField)
     if value.IsValid() && value.CanSet() {
-      id, err := strconv.ParseInt(userId, 10, 64)
-      if err != nil {
-        return false
-      }
-      value.SetInt(id)
+      return setInt(value, userId)
     }
   }
-  return true
-}
-
-func Unauthorized(responseText string, rw http.ResponseWriter) {
-  rw.Header().Set("Content-Type", "application/json;charset=utf-8")
-  rw.WriteHeader(http.StatusUnauthorized)
-  res, _ := json.Marshal(datatype.Response{
-    Status: http.StatusUnauthorized,
-    ResponseText: "Token Auth Failed",
-  })
-  rw.Write(res)
+  return false
 }
