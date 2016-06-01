@@ -9,7 +9,7 @@ import (
 )
 
 const priFriend = "friend"
-const priPrivacy = "privacy"
+const priPrivate = "private"
 
 func (this *Audio) ListAudio(body *music.Audio) datatype.Response{
 	sheet := models.Sheet{}
@@ -32,7 +32,7 @@ func (this *Audio) ListAudio(body *music.Audio) datatype.Response{
 		return ok("success", getAudios(tx, &audios, body.SheetID))
 	}
 
-	if sheet.Privilege == priPrivacy{
+	if sheet.Privilege == priPrivate{
 		if body.UserID != sheet.UserID{
 			return forbidden("no enough privi")
 		}

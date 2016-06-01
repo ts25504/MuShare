@@ -18,6 +18,10 @@ func (this *Sheet) DeleteSheet(body *music.Sheet) datatype.Response{
 	//get id of sheet
 	tx.Where("name = ? AND user_id = ?",
 		body.Name, strconv.Itoa(body.UserID)).First(&sheet)
+
+	if sheet.ID == 0 {
+		return forbidden("not existed sheet or not belongs to the user")
+	}
 	//find the releted audios
 	tx.Model(&sheet).Related(&sheet.Audios)
 	for _, audio := range sheet.Audios{

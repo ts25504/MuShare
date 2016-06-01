@@ -38,7 +38,6 @@ func RetrieveBody(typ reflect.Type) martini.Handler {
     } else {
       utils.JsonDecoder(req.Body, body)
     }
-
     c.Next()
     logger.Println(body)
   }
