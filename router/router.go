@@ -12,7 +12,7 @@ import (
   "MuShare/datatype/request/music"
   "MuShare/controllers/api/music/audio"
   "MuShare/controllers/api/user/profile"
-  "MuShare/controllers/api/user/Search"
+  "MuShare/controllers/api/user/search"
 )
 
 func Include(m *martini.ClassicMartini) {
@@ -45,7 +45,7 @@ func includeUserApi(m *martini.ClassicMartini) {
   }, RetrieveBody(reflect.TypeOf(user.Profile{})))
 
   m.Group("/api/user/search", func(r martini.Router) {
-    r.Get("/stranger", Search.Stranger)
+    r.Get("/stranger", search.Stranger)
   }, RetrieveBody(reflect.TypeOf(user.Search{})), TokenAuth)
 }
 

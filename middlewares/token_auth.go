@@ -24,7 +24,7 @@ rw http.ResponseWriter, req *http.Request, config *conf.Conf) {
   group := make(map[string]string)
   match := r.FindStringSubmatch(req.Header.Get("Authorization"))
   if len(match) < 2 {
-    Unauthorized("User Auth Failed", rw)
+    unauthorized("User Auth Failed", rw)
     return
   }
   for i, name := range r.SubexpNames() {

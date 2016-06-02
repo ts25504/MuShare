@@ -10,6 +10,15 @@ run-dev:
 run-test:
 	MARTINI_ENV=test go run app.go
 
+db-migration-prod:
+	goose -env production $(opt)
+
+db-migration-dev:
+	goose -env development $(opt)
+
+db-migration-test:
+	goose -env test $(opt)
+
 test:
 	go test
 
