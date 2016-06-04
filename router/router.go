@@ -41,6 +41,7 @@ func includeUserApi(m *martini.ClassicMartini) {
   }, RetrieveBody(reflect.TypeOf(user.Friend{})), TokenAuth)
 
   m.Group("/api/user/profile", func(r martini.Router) {
+    r.Get("/get", profile.GetProfile)
     r.Put("/update", profile.UpdateProfile)
   }, RetrieveBody(reflect.TypeOf(user.Profile{})))
 
@@ -66,6 +67,6 @@ func includeMusicApi(m *martini.ClassicMartini) {
 
   m.Group("/api/music/migration", func(r martini.Router) {
     r.Put("/update", audio.SheetMigration)
-  }, RetrieveBody(reflect.TypeOf(music.SheetMigration{})),TokenAuth)
+  }, RetrieveBody(reflect.TypeOf(music.SheetMigration{})), TokenAuth)
 
 }

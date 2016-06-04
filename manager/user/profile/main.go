@@ -10,6 +10,12 @@ type Profile struct {
   DB *gorm.DB
 }
 
+var gender map[string]string;
+
+func init() {
+  gender = map[string]string{"Male": "Male", "Female": "Female"}
+}
+
 func ok(responseText string, body interface{}) datatype.Response {
   res := datatype.Response{
     Status: http.StatusOK,

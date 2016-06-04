@@ -18,7 +18,11 @@ func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
   }
 
   if body.Avatar != nil {
-    update["avatar"] = body.Avatar
+    if gender[body.Avatar.(string)] == "" {
+      update["avatar"] = gender[body.Avatar.(string)]
+    } else {
+      update["avatar"] = gender["Male"]
+    }
   }
 
   if body.Birth != nil {
