@@ -10,16 +10,15 @@ func (this *Profile) GetProfile(body *user.Profile) datatype.Response {
   tx := this.DB.Begin()
   user := models.User{}
 
-  if body.FriendID == nil || body.FriendID == 0 {
-     badRequest("")
+  if body.FriendID == 0 {
+    return badRequest("")
   }
 
-  if err := tx.Find(&user, body.FriendID); err != nil {
-    panic(err.Error)
-  }
+  tx.Where("id=?", body.FriendID).Find(&user)
+
 
   if tx.NewRecord(&user) {
-    forbidden("User Doesn't Exsit")
+    return forbidden("User Doesn't Exsit")
   }
 
   tx.Commit()

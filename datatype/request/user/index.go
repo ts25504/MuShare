@@ -13,8 +13,8 @@ type Friend struct {
 }
 
 type Profile struct {
-  UserID      interface{}
-  FriendID    interface{}
+  UserID      int
+  FriendID    int
   Name        interface{}
   Avatar      interface{}
   Gender      interface{}

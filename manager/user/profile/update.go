@@ -4,12 +4,13 @@ import (
   "MuShare/datatype"
   "MuShare/datatype/request/user"
   "MuShare/db/models"
+  "fmt"
 )
 
 func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
   tx := this.DB.Begin()
   user := models.User{}
-  user.ID = body.UserID.(int)
+  user.ID = body.UserID
   update := make(map[string]interface{})
 
 
@@ -45,12 +46,15 @@ func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
     badRequest("Name Can't Be Null")
   }
 
+  fmt.Println(update)
+
   err := tx.Model(&user).Updates(update).Error
+
   if err != nil {
     panic(err.Error())
-  } else {
-    tx.Commit()
   }
+
+  tx.Commit()
 
   return ok("", nil)
 }

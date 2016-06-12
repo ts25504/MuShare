@@ -26,7 +26,7 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
     goto BadRequest
   }
 
-  if body.Name == "" && body.Mail == "" && body.Phone == "" {
+  if body.Name == "" || body.Mail == "" || body.Phone == "" {
     goto BadRequest
   }
 
