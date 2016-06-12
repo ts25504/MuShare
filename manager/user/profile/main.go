@@ -35,6 +35,7 @@ func badRequest(responseText string) datatype.Response {
 }
 
 func forbidden(responseText string) datatype.Response {
+
   res := datatype.Response{
     Status:http.StatusForbidden,
     ResponseText: responseText,
