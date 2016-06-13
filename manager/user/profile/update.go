@@ -4,7 +4,6 @@ import (
   "MuShare/datatype"
   "MuShare/datatype/request/user"
   "MuShare/db/models"
-  "fmt"
 )
 
 func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
@@ -45,8 +44,6 @@ func (this *Profile) UpdateProfile(body *user.Profile) datatype.Response {
   if body.Name == "" {
     badRequest("Name Can't Be Null")
   }
-
-  fmt.Println(update)
 
   err := tx.Model(&user).Updates(update).Error
 

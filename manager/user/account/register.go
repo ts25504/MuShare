@@ -59,7 +59,7 @@ func (this *Account) Register(body *user.Account)  datatype.Response{
 	tx.Where("mail=?", body.Mail).First(&u)
 	sheet.UserID = u.ID
 	sheet.Name = "default#" + strconv.Itoa(u.ID)
-	sheet.Privilege = "pravicy"
+	sheet.Privilege = "privacy"
 	sheet.CreatedAt = time.Now().Unix()
 	sheet.UpdatedAt = time.Now().Unix()
 	tx.Create(&sheet)
